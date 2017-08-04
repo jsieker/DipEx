@@ -1,0 +1,20 @@
+{
+    "collab_server" : "",
+    "contents" : "exportPattern(\"^[[:alpha:]]+\")\nimportFrom(\"stats\", \"filter\", \"median\")\n  importFrom(\"utils\", \"read.table\")\n",
+    "created" : 1501880621989.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1503058402",
+    "id" : "924B0675",
+    "lastKnownWriteTime" : 1501880625,
+    "last_content_update" : 1501880625707,
+    "path" : "~/DipEx/NAMESPACE",
+    "project_path" : "NAMESPACE",
+    "properties" : {
+    },
+    "relative_order" : 7,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_namespace"
+}

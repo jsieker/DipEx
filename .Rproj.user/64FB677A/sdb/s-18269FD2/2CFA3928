@@ -1,0 +1,20 @@
+{
+    "collab_server" : "",
+    "contents" : "Package: DipEx\nType: Package\nTitle: Analysis of RNAseq data distributions through visualization and Hartigan's Dip test\nVersion: 0.1.0\nAuthors@R: c(person(\"Sohyon\", \"Lee\", email = \"sohyon@scripps.edu\", role = c(\"aut\")), person(\"Jeremy\", \"Sieker\", email = \"jsieker@ucsd.edu\", role = c(\"aut\", \"cre\")), person(\"Kristin\", \"Baldwin\", email = \"kbaldwin@scripps.edu\", role = c(\"aut\"))  )\nDescription: Conducts dip analysis on RNA expression data to evaluate the trends in how individual genes differ in expression across samples. Genes demonstrating different levels of bimodality in their cross-sample distributions are easily identified and grouped for further analysis. To aid with the understanding and exploration of the dip results, plots can be generated to visualize the distributions of genes randomly selected from each region of dip output.\nDepends: R (>= 3.4.1)\nLicense: GPL-2\nEncoding: UTF-8\nLazyData: true\nImports: diptest, dplyr, ggplot2, magrittr, gridExtra\nRoxygenNote: 6.0.1\n",
+    "created" : 1501879222010.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "260955762",
+    "id" : "2CFA3928",
+    "lastKnownWriteTime" : 1501879861,
+    "last_content_update" : 1501879861,
+    "path" : "~/DipEx/DESCRIPTION",
+    "project_path" : "DESCRIPTION",
+    "properties" : {
+    },
+    "relative_order" : 6,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "dcf"
+}

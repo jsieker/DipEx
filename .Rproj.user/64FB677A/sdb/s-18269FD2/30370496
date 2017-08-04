@@ -1,0 +1,20 @@
+{
+    "collab_server" : "",
+    "contents" : "\\name{plotSamplesByName}\n\\alias{plotSamplesByName}\n%- Also NEED an '\\alias' for EACH other topic documented here.\n\\title{\nPlots expression distributions of genes selected by name\n}\n\\description{\nAllows the user to plot the expression distributions of up to 8 genes of their choice.\n}\n\\usage{\nplotSamplesByName(nameList, RNAdata)\n}\n%- maybe also 'usage' for other objects documented here.\n\\arguments{\n  \\item{nameList}{\nThe names of the desired genes should be concatenated into this variable. If more than eight gene names are specified, function will typically fail. (ex. li <- c(\"Ascl3\", \"Bambi\", \"Pols2\")) ). Pay attention to proper capitalization in specifying gene names.\n}\n  \\item{RNAdata}{\nThis argument specifies the RNAseq dataset from which the specified genes' expressional data will be taken. It may take the form of raw or normalized data.\n}\n}\n\\details{\n%%  ~~ If necessary, more details than the description above ~~\n}\n\\value{\nA plot called 'x1' is returned from this function.\n}\n\\references{\nH. Wickham. ggplot2: Elegant Graphics for Data Analysis. Springer-Verlag New York, 2009.\n}\n\\author{\nSoftware authors: Sohyon Lee, Jeremy Sieker, Kristin Baldwin\n\n}\n\\note{\n%%  ~~further notes~~\n}\n\n%% ~Make other sections like Warning with \\section{Warning }{....} ~\n\n\\seealso{\n%% ~~objects to See Also as \\code{\\link{help}}, ~~~\n}\n\\examples{\n}\n% Add one or more standard keywords, see file 'KEYWORDS' in the\n% R documentation directory.\n\\keyword{ ~kwd1 }% use one of  RShowDoc(\"KEYWORDS\")\n\\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line\n",
+    "created" : 1501804071215.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1746716241",
+    "id" : "30370496",
+    "lastKnownWriteTime" : 1501878748,
+    "last_content_update" : 1501878748700,
+    "path" : "~/DipEx/man/plotSamplesByName.Rd",
+    "project_path" : "man/plotSamplesByName.Rd",
+    "properties" : {
+    },
+    "relative_order" : 4,
+    "source_on_save" : true,
+    "source_window" : "",
+    "type" : "r_doc"
+}

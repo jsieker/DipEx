@@ -1,0 +1,20 @@
+{
+    "collab_server" : "",
+    "contents" : "\\name{previewDipDistribution}\n\\alias{previewDipDistribution}\n%- Also NEED an '\\alias' for EACH other topic documented here.\n\\title{\nPlots the distribution of the gene set's dip values and dip p-values.\n}\n\\description{\nAllows the viewing of where the dataset's dip values and dip p-values are distributed to aid in the assignment of region break lines and the number of regions.\n}\n\\usage{\npreviewDipDistribution(RNAdata, rawRNAdata, minimumCounts, barLine)\n}\n%- maybe also 'usage' for other objects documented here.\n\\arguments{\n  \\item{RNAdata}{\nThis argument specifies the RNAseq dataset to be analyzed. It may be in the form of either raw or normalized data. If the analysis is to involve a 'minimumCounts' screen to filter out low-expression genes, then 'RNAdata' should specify the normalized expression data. The rows must be genes (with gene names as row names) and the columns must be different samples (ideally, with the sample names as the column names, but this specific exemption will not disable the program).\n}\n  \\item{rawRNAdata}{\nThis is an optional argument used only when a 'minimumCounts' filter is to be applied. Each gene's highest expression level is extracted from 'rawRNAdata'. If that maximum expression does not exceed the value supplied by 'minimumCounts', then that gene will be exempted from the analysis of the normalized counts. It is crucial to note that this is not the dataset to be analyzed. This set serves as part of an optional filter. The rows must be genes (with gene names as row names) and the columns must be the samples, both of which should correspond directly with the rows and columns of the normalized data supplied as 'RNAdata'.\n}\n  \\item{minimumCounts}{\nIf 'rawRNAdata' is supplied, 'minimumCounts' is the threshold that each gene's maximum raw expression value must exceed to remain in the normalized RNA data for the analysis.\n}\n  \\item{barLine}{\nThis selects the x-intercept of the bar that can be overlaid on the graph. It will default to 0 if no value is supplied.\n}\n}\n\\details{\n%%  ~~ If necessary, more details than the description above ~~\n}\n\\value{\nThis function returns a dataframe (DipOutputDF) with the each gene's dip values and dip p-values, a density plot of the genes' dip values (x1), and a density plot of the genes' dip p-values (x2).\n}\n\\references{\nMartin Maechler (2016). diptest: Hartigan's Dip Test Statistic for Unimodality - Corrected. R package version 0.75-7. https://CRAN.R-project.org/package=diptest\n\nH. Wickham. ggplot2: Elegant Graphics for Data Analysis. Springer-Verlag New York, 2009.\n}\n\\author{\nSoftware authors: Sohyon Lee, Jeremy Sieker, Kristin Baldwin\n}\n",
+    "created" : 1501812842524.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "865376252",
+    "id" : "C74CFF85",
+    "lastKnownWriteTime" : 1501878726,
+    "last_content_update" : 1501878726884,
+    "path" : "~/DipEx/man/previewDipDistribution.Rd",
+    "project_path" : "man/previewDipDistribution.Rd",
+    "properties" : {
+    },
+    "relative_order" : 5,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_doc"
+}
