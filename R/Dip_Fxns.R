@@ -429,19 +429,19 @@ plotSamplesByDipRegion <- function(minimumCounts, breaks, labels, rawRNAdata,
 
 plotSamplesByName <- function(nameList, RNAdata) {
 
-  if(missing(ncol) && length(nameList)==any(c(2, 4, 6))) {
+  if(length(nameList)==any(c(2, 4, 6))) {
     ncol <- 2
   }
 
-  if(missing(ncol) && length(nameList)==any(c(3, 5, 7))) {
+  if(length(nameList)==any(c(3, 5, 7))) {
     ncol <- 3
   }
 
-  if(missing(ncol) && length(nameList)==1) {
+  if(length(nameList)==1) {
     ncol <- 1
   }
 
-  if(missing(ncol) && length(nameList)==8) {
+  if(length(nameList)==8) {
     ncol <- 4
   }
 
