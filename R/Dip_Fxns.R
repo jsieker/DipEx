@@ -64,7 +64,7 @@ dipExtension <- function(breaks, labels, RNAdata, rawRNAdata, minimumCounts){
     e <- diptest::dip(RNAdataMat[k,], full.result = FALSE, min.is.0 = FALSE, debug = FALSE)
     f <- diptest::dip.test(RNAdataMat[k,], simulate.p.value = FALSE, B = 2000)
     DipOutput[k,1] <- e #save output into pre-prepared matrix
-    DipOutputPvals[k,1] <- f$p_value
+    DipOutputPvals[k,1] <- f$p.value
   }
 
   DipOutputDF <- data.frame(DipOutput)
