@@ -573,12 +573,12 @@ previewDipDistribution <- function(RNAdata, rawRNAdata, minimumCounts, barLine){
   x1 <<- ggplot2::ggplot(DipOutputDF, ggplot2::aes(x=Dip)) +
     ggplot2::geom_density() + ggplot2::geom_vline(xintercept=barLine, colour="#FF9999") +
     ggplot2::scale_x_continuous(breaks = round(seq(min(DipOutputDF$Dip), max(DipOutputDF$Dip), by = 0.01),2)) +
-    ggplot2::theme(plot.title = element_text(hjust = 0.5)) + ggplot2::labs(title= "Bimodality among RNA expression patterns",x="Hartigan's Dip Score")
+    ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5)) + ggplot2::labs(title= "Bimodality among RNA expression patterns",x="Hartigan's Dip Score")
 
   x2 <<- ggplot2::ggplot(DipOutputDF, ggplot2::aes(x = p-value)) +
     ggplot2::geom_density() + ggplot2::geom_vline(xintercept = barLine, colour = "#FF9999") +
     ggplot2::scale_x_continuous(breaks = round(seq(min(DipOutputDF$p-value),
-                                          max(DipOutputDF$p-value), by = 0.01), 2)) + ggplot2::theme(plot.title = element_text(hjust = 0.5)) +
+                                          max(DipOutputDF$p-value), by = 0.01), 2)) + ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5)) +
     ggplot2::labs(title = "Bimodality among RNA expression patterns",
          x = "Hartigan's Dip Score")
 
