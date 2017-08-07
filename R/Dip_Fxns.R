@@ -25,13 +25,18 @@ dipExtension <- function(breaks, labels, RNAdata, rawRNAdata, minimumCounts){
   }
   print("reading in data")
   if(x.1==1) {if(length(breaks) != (length(labels) + 1)) {print("invalid dimensions of breaks and labels")}}
-  RNAdata <- as.matrix(read.table(RNAdata))
-  rawRNAdata <- read.table(rawRNAdata)
+  if(mode(RNAdata)=="character") {
+  	RNAdata <- as.matrix(read.table(RNAdata))
+  	
+  }
+  
+ 
   RNAdataDF <- data.frame(RNAdata)
 
 
   #filtering of RNAdataDF and DipOutputDF. If the DipOutputDF one fails, move this filter in front of the DipOutputDF creation.
   if(x.3 == 1) {	print("filtering")
+  	rawRNAdata <- read.table(rawRNAdata)
     #row.names(DipOutputDF) <- row.names(RNAdataDF)
     rawRNAdata$max <- 0
     rawRNAdata$max <- apply(rawRNAdata, 1, max)
@@ -44,7 +49,12 @@ dipExtension <- function(breaks, labels, RNAdata, rawRNAdata, minimumCounts){
     #DipOutputDF <- DipOutputDF[!(row.names(DipOutputDF)) %in% rr,]
     #row.names(DipOutputDF) <- c(1:nrow(DipOutputDF))
   }
-
+  if(x.3 == 0) {
+  	
+  	RNAdataDF_R <- RNAdataDF
+  	DipOutput <- matrix(nrow=nrow(RNAdataDF_R), ncol=1)
+    DipOutputPvals <- matrix(nrow=nrow(RNAdataDF_R), ncol=1)
+  }
 
 
   print("conducting dip analysis")
@@ -194,7 +204,8 @@ plotSamplesByDipRegion <- function(minimumCounts, breaks, labels, rawRNAdata,
 
   if(regions>=1){	#pick four from whole distribution
     ifelse(regions==1, DF.1 <- DipOutputDF, DF.1 <- DipOutputDF[DipOutputDF$Region==labels[1],])
-    ifelse(nrow(DF.1)<samples, print("error: too few observations remaining in region 1 for declared sampling number to be selected"), print("Region 1 samples selected"))
+    ifelse(nrow(DF.1)<samples, print("error: too few observations
+                                     remaining in region 1 for declared sampling number to be selected"), print("Region 1 samples selected"))
     DF.1Samples <- DF.1[sample(nrow(DF.1), size = samples, replace = FALSE),]
     DF.1Names <- DF.1Samples[,"GeneID"]
     DF.1SampleGeneData <- data.frame(t(RNAdataDF_R[row.names(RNAdataDF_R) %in% DF.1Names, ]))
@@ -231,7 +242,8 @@ plotSamplesByDipRegion <- function(minimumCounts, breaks, labels, rawRNAdata,
 
   if(regions>=2){
     DF.2 <- DipOutputDF[DipOutputDF$Region==labels[2],]
-    ifelse(nrow(DF.2)<samples, print("error: too few observations remaining in region 2 for declared number of samples to be selected"), print("Region 2 samples selected"))
+    ifelse(nrow(DF.2)<samples, print("error: too few observations
+                                     remaining in region 2 for declared number of samples to be selected"), print("Region 2 samples selected"))
     DF.2Samples <- DF.2[sample(nrow(DF.2), size = samples, replace = FALSE),]
     DF.2Names <- DF.2Samples[,"GeneID"]
     DF.2SampleGeneData <- data.frame(t(RNAdataDF_R[row.names(RNAdataDF_R) %in% DF.2Names, ]))
@@ -268,7 +280,8 @@ plotSamplesByDipRegion <- function(minimumCounts, breaks, labels, rawRNAdata,
 
   if(regions>=3){
     DF.3 <- DipOutputDF[DipOutputDF$Region==labels[3],]
-    ifelse(nrow(DF.3)<samples, print("error: too few observations remaining in region 3 for declared number of samples to be selected"), print("Region 3 samples selected"))
+    ifelse(nrow(DF.3)<samples, print("error: too few observations
+                                     remaining in region 3 for declared number of samples to be selected"), print("Region 3 samples selected"))
     DF.3Samples <- DF.3[sample(nrow(DF.3), size = samples, replace = FALSE),]
     DF.3Names <- DF.3Samples[,"GeneID"]
     DF.3SampleGeneData <- data.frame(t(RNAdataDF_R[row.names(RNAdataDF_R) %in% DF.3Names, ]))
@@ -305,7 +318,8 @@ plotSamplesByDipRegion <- function(minimumCounts, breaks, labels, rawRNAdata,
 
   if(regions>=4){
     DF.4 <- DipOutputDF[DipOutputDF$Region==labels[4],]
-    ifelse(nrow(DF.4)<samples, print("error: too few observations remaining in region 4 for declared number of samples to be selected"), print("Region 4 samples selected"))
+    ifelse(nrow(DF.4)<samples, print("error: too few observations
+                                     remaining in region 4 for declared number of samples to be selected"), print("Region 4 samples selected"))
     DF.4Samples <- DF.4[sample(nrow(DF.4), size = samples, replace = FALSE),]
     DF.4Names <- DF.4Samples[,"GeneID"]
     DF.4SampleGeneData <- data.frame(t(RNAdataDF_R[row.names(RNAdataDF_R) %in% DF.4Names, ]))
@@ -342,7 +356,8 @@ plotSamplesByDipRegion <- function(minimumCounts, breaks, labels, rawRNAdata,
 
   if(regions>=5){
     DF.5 <- DipOutputDF[DipOutputDF$Region==labels[5],]
-    ifelse(nrow(DF.5)<samples, print("error: too few observations remaining in region 5 for declared number of samples to be selected"), print("Region 5 samples selected"))
+    ifelse(nrow(DF.5)<samples, print("error: too few observations
+                                     remaining in region 5 for declared number of samples to be selected"), print("Region 5 samples selected"))
     DF.5Samples <- DF.5[sample(nrow(DF.5), size = samples, replace = FALSE),]
     DF.5Names <- DF.5Samples[,"GeneID"]
     DF.5SampleGeneData <- data.frame(t(RNAdataDF_R[row.names(RNAdataDF_R) %in% DF.5Names, ]))
@@ -533,3 +548,5 @@ previewDipDistribution <- function(RNAdata, rawRNAdata, minimumCounts, barLine){
   return(x1)
   return(x2)
 }
+
+#make the adjust into an argument

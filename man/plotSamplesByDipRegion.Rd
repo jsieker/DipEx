@@ -8,7 +8,8 @@ Plots expression distributions of genes selected randomly from each dip output r
 Selects a user-defined number of sample genes from across the spectrum of dip values and plots their RNAseq expression distributions.
 }
 \usage{
-plotSamplesByDipRegion(minimumCounts, breaks, labels, rawRNAdata, RNAdata, xlab, samples)
+plotSamplesByDipRegion(minimumCounts, breaks, labels,
+rawRNAdata, RNAdata, xlab, samples)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
