@@ -588,7 +588,7 @@ previewDipDistribution <- function(RNAdata, rawRNAdata, minimumCounts, barLine, 
     ggplot2::scale_x_continuous(breaks = round(seq(min(DipOutputDF$p),
                                           max(DipOutputDF$p), by = 0.1), 2)) + ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5)) +
     ggplot2::labs(title = "Bimodality among RNA expression patterns",
-         x = "Hartigan's Dip Score")
+         x = "Hartigan's Dip p-value")
 
 }
 
