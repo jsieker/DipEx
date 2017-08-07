@@ -50,8 +50,9 @@ dipExtension <- function(breaks, labels, RNAdata, rawRNAdata, minimumCounts){
     #row.names(DipOutputDF) <- c(1:nrow(DipOutputDF))
   }
   if(x.3 == 0) {
-  	
+  	#consider removing/changing redundant variable names
   	RNAdataDF_R <- RNAdataDF
+  	RNAdataMat <- as.matrix(RNAdataDF_R)
   	DipOutput <- matrix(nrow=nrow(RNAdataDF_R), ncol=1)
     DipOutputPvals <- matrix(nrow=nrow(RNAdataDF_R), ncol=1)
   }
