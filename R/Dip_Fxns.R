@@ -538,6 +538,12 @@ previewDipDistribution <- function(RNAdata, rawRNAdata, minimumCounts, barLine){
     RNAdata <- as.matrix(read.table(RNAdata))
   }
   
+  if(!missing(rawRNAdata)){
+    if(mode(rawRNAdata)=="character"){
+      rawRNAdata <- as.matrix(read.table(rawRNAdata))
+    }
+  }
+  
   RNAdataMat <- as.matrix(RNAdata)
   if(missing(barLine)){barLine <- 0}
 
@@ -546,6 +552,7 @@ previewDipDistribution <- function(RNAdata, rawRNAdata, minimumCounts, barLine){
   } else{
     RNAdataMat <- as.matrix(RNAdata)
     RNAdataDF <- data.frame(RNAdataMat)
+    rawRNAdata <- data.frame(rawRNAdata)
     rawRNAdata$max <- 0
     rawRNAdata$max <- apply(rawRNAdata, 1, max)
     RNArawbelow <- rawRNAdata[which(rawRNAdata$max<minimumCounts),]
@@ -577,8 +584,8 @@ previewDipDistribution <- function(RNAdata, rawRNAdata, minimumCounts, barLine){
 
   x2 <<- ggplot2::ggplot(DipOutputDF, ggplot2::aes(x = p-value)) +
     ggplot2::geom_density() + ggplot2::geom_vline(xintercept = barLine, colour = "#FF9999") +
-    ggplot2::scale_x_continuous(breaks = round(seq(min(DipOutputDF$p-value),
-                                          max(DipOutputDF$p-value), by = 0.01), 2)) + ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5)) +
+    ggplot2::scale_x_continuous(breaks = round(seq(min(DipOutputDF$"p-value"),
+                                          max(DipOutputDF$"p-value"), by = 0.01), 2)) + ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5)) +
     ggplot2::labs(title = "Bimodality among RNA expression patterns",
          x = "Hartigan's Dip Score")
 
