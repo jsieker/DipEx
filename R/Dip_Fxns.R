@@ -276,7 +276,7 @@ plotSamplesByDipRegion <- function(minimumCounts, breaks, labels, rawRNAdata,
     if(samples==6){x1 <<- gridExtra::grid.arrange(pp1, pp2, pp3, pp4, pp5, pp6, ncol=2)}
   }
   
-  if(regions>=2 && !is.na(table(DipOutputDF$Region)[1]){
+  if(regions>=2 && !is.na(table(DipOutputDF$Region)[1])){
     DF.2 <- DipOutputDF[DipOutputDF$Region==labels[2],]
     ifelse(nrow(DF.2)<samples, print("error: too few observations
                                      remaining in region 2 for declared number of samples to be selected"), print("Region 2 samples selected"))
@@ -314,7 +314,7 @@ plotSamplesByDipRegion <- function(minimumCounts, breaks, labels, rawRNAdata,
     if(samples==6){x2 <<- gridExtra::grid.arrange(pp1, pp2, pp3, pp4, pp5, pp6, ncol=2)}
   }
   
-  if(regions>=3 && !is.na(table(DipOutputDF$Region)[1]){
+  if(regions>=3 && !is.na(table(DipOutputDF$Region)[1])){
     DF.3 <- DipOutputDF[DipOutputDF$Region==labels[3],]
     ifelse(nrow(DF.3)<samples, print("error: too few observations
                                      remaining in region 3 for declared number of samples to be selected"), print("Region 3 samples selected"))
@@ -352,7 +352,7 @@ plotSamplesByDipRegion <- function(minimumCounts, breaks, labels, rawRNAdata,
     if(samples==6){x3 <<- gridExtra::grid.arrange(pp1, pp2, pp3, pp4, pp5, pp6, ncol=2)}
   }
   
-  if(regions>=4 && !is.na(table(DipOutputDF$Region)[1]){
+  if(regions>=4 && !is.na(table(DipOutputDF$Region)[1])){
     DF.4 <- DipOutputDF[DipOutputDF$Region==labels[4],]
     ifelse(nrow(DF.4)<samples, print("error: too few observations
                                      remaining in region 4 for declared number of samples to be selected"), print("Region 4 samples selected"))
@@ -390,7 +390,7 @@ plotSamplesByDipRegion <- function(minimumCounts, breaks, labels, rawRNAdata,
     if(samples==6){x4 <<- gridExtra::grid.arrange(pp1, pp2, pp3, pp4, pp5, pp6, ncol=2)}
   }
   
-  if(regions>=5 && !is.na(table(DipOutputDF$Region)[1]){
+  if(regions>=5 && !is.na(table(DipOutputDF$Region)[1])){
     DF.5 <- DipOutputDF[DipOutputDF$Region==labels[5],]
     ifelse(nrow(DF.5)<samples, print("error: too few observations
                                      remaining in region 5 for declared number of samples to be selected"), print("Region 5 samples selected"))
