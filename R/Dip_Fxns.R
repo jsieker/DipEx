@@ -162,7 +162,7 @@ plotSamplesByDipRegion <- function(minimumCounts, breaks, labels, rawRNAdata,
     e <- diptest::dip(RNAdataMat[k,], full.result = FALSE, min.is.0 = FALSE, debug = FALSE) #actual dip statistical test
     f <- diptest::dip.test(RNAdataMat[k,], simulate.p.value = FALSE, B = 2000)
     DipOutput[k,1] <- e #save output into pre-prepared matrix
-    DipOutputPvals[k,1] <- f$p_value
+    DipOutputPvals[k,1] <- f$p.value
     ##consider extracting the rownames off RNAdata as a vector, which you can then reimpute here
   }
 
@@ -539,7 +539,7 @@ previewDipDistribution <- function(RNAdata, rawRNAdata, minimumCounts, barLine){
     e <- diptest::dip(RNAdataMat[k,], full.result = FALSE, min.is.0 = FALSE, debug = FALSE) #actual dip statistical test
     f <- diptest::dip.test(RNAdataMat[k,], simulate.p.value = FALSE, B = 2000)
     DipOutput[k,1] <- e #save output into pre-prepared matrix
-    DipOutput[k,2] <- f$p_value
+    DipOutput[k,2] <- f$p.value
     ##consider extracting the rownames off RNAdata as a vector, which you can then reimpute here
   }
 
