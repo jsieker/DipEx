@@ -170,7 +170,7 @@ plotSamplesByDipRegion <- function(minimumCounts, breaks, labels, rawRNAdata,
   
   DipOutputDF <- data.frame(DipOutput) # matrix -> dataframe
   DipOutputPDF <- data.frame(DipOutputPvals)
-  DipOutputDF$GeneID <- rownames(RNAdataDF_R)
+  DipOutputDF$GeneID <- as.character(rownames(RNAdataDF_R))
   
   if(regions==1 && missing(labels)){labels = "Undivided Sample"}
   if(regions==2 && missing(labels)){labels = c("Region A", "Region B")}
