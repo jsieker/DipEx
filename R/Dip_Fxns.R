@@ -100,7 +100,7 @@ dipExtension <- function(breaks, labels, RNAdata, rawRNAdata, minimumCounts){
     ZeroIMedian[k,] <- median(as.numeric(shelf))
   }
 
-  ReducedZeroXMedian <- ZeroXMedian[!(row.names(ZeroXMedian) %in% rr),]
+
   DipOutputDF$ZeroXMedian <- as.numeric(ZeroXMedian)
   DipOutputDF$ZeroIMedian <- as.numeric(ZeroIMedian)
   DipOutputDF <- mutate(DipOutputDF, Divergence = ZeroXMedian-ZeroIMedian)
