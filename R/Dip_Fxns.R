@@ -115,33 +115,42 @@ plotSamplesByDipRegion <- function(minimumCounts, breaks, labels, rawRNAdata,
   # rawRNAdata, normRNAdata, xlab(xx) (make it work from 1 to 5. No default), samples(number to be sampled)
 
   xx <- xlab
+  x.1 <- 0
   if(missing(filter)) {print("no filter applied")}
-  if(missing(RNAdata) && missing(rawRNAdata)) {print("RNA data missing")}
+  if(missing(RNAdata) && missing(rawRNAdata)) {print("RNA data missing"); x.1 <- 1}
   if(missing(breaks)) {print("no breaks selected");  regions <- 1}
   else(regions <- (length(breaks) + 1))
   if(missing(RNAdata) && !missing(rawRNAdata)) {RNAdata <- rawRNAdata}
   if(missing(samples)) {samples <- 4}
+  
 
-
-  #RNAdata <- read.table("/Users/sieker/Dropbox/Jeremy Rotation Files/normalized counts/DESeq_normalizedcounts_iNsEndoNsMEFs.txt")
-  RNAdata <- read.table(RNAdata)
-
-  #RNArawcounts <- data.frame(read.table("/Users/sieker/Dropbox/Jeremy Rotation Files/rawcounts/DESeq_rawcounts_iNsEndoNsMEFs.txt"))
-  RNArawcounts <- read.table(RNAdata)
-
-
+  if(mode(RNAdata)=="character") {
+    RNAdata <- as.matrix(read.table(RNAdata))
+  }
   RNAdataDF <- data.frame(RNAdata)
+  
+  if(mode(rawRNAdata)=="character") {
+    rawRNAdata <- as.matrix(read.table(rawRNAdata))
+  }
+  
+  if(!missing(rawRNAdata && !missing(RNAdata))){
+  RNArawcounts <- rawRNAdata
   RNArawcounts$max <- 0
   RNArawcounts$max <- apply(RNArawcounts, 1, max)
   RNArawbelow50 <- RNArawcounts[which(RNArawcounts$max<minimumCounts),]
   rr <- row.names(RNArawbelow50)
   RNAdataDF_R <- RNAdataDF[(!row.names(RNAdataDF) %in% rr), ]
   RNAdataMat <- as.matrix(RNAdataDF_R)
-
   DipOutput <- matrix(nrow=nrow(RNAdataDF_R), ncol=1) #preparing a matrix to receive output in the function step
   DipOutputPvals <- matrix(nrow=nrow(RNAdataDF_R), ncol=1) #preparing a matrix to receive output in the function step
+  } else {
+  RNAdataDF_R <- RNAdataDF
+  RNAdataMat <- as.matrix(RNAdataDF_R)
+  DipOutput <- matrix(nrow=nrow(RNAdataDF_R), ncol=1)
+  DipOutputPvals <- matrix(nrow=nrow(RNAdataDF_R), ncol=1)
+}
 
-
+  
 
   #setup and calculation
   for (k in 1:nrow(RNAdataMat)){
