@@ -119,9 +119,10 @@ plotSamplesByDipRegion <- function(minimumCounts, breaks, labels, rawRNAdata,
   if(missing(minimumCounts)) {print("no filter applied")}
   if(missing(RNAdata) && missing(rawRNAdata)) {print("RNA data missing"); x.1 <- 1}
   if(missing(breaks)) {print("no breaks selected");  regions <- 1}
-  else(regions <- (length(breaks) + 1))
+  else(regions <- (length(breaks) - 1))
   if(missing(RNAdata) && !missing(rawRNAdata)) {RNAdata <- rawRNAdata}
   if(missing(samples)) {samples <- 4}
+  if(missing(xlab)){xlab <- "Sample RNA Expression"}
   
 
   if(mode(RNAdata)=="character") {
@@ -170,19 +171,21 @@ plotSamplesByDipRegion <- function(minimumCounts, breaks, labels, rawRNAdata,
   DipOutputPDF <- data.frame(DipOutputPvals)
   DipOutputDF$GeneID <- rownames(RNAdataDF_R)
 
-  if(regions==1){labels = "Undivided Sample"}
-  if(regions==2){labels = c("Region A", "Region B")}
-  if(regions==3){labels = c("Region A", "Region B", "Region C")}
-  if(regions==4){labels = c("Region A", "Region B", "Region C", "Region D")}
-  if(regions==5){labels = c("Region A", "Region B", "Region C", "Region D", "Region E")}
+  if(regions==1 && missing(labels)){labels = "Undivided Sample"}
+  if(regions==2 && missing(labels)){labels = c("Region A", "Region B")}
+  if(regions==3 && missing(labels)){labels = c("Region A", "Region B", "Region C")}
+  if(regions==4 && missing(labels)){labels = c("Region A", "Region B", "Region C", "Region D")}
+  if(regions==5 && missing(labels)){labels = c("Region A", "Region B", "Region C", "Region D", "Region E")}
 
 
-  if(breaks!="NONE" | (is.numeric(breaks) && breaks > 0)){
+  if(breaks!="NONE"){ # removed as alt condition of if clause:  | (is.numeric(breaks) && breaks > 0)
     DipOutputDF$Region <- cut(DipOutputDF$DipOutput,
                               breaks = breaks,
                               labels = labels,
                               right = FALSE)
+    if(mode(breaks[1])=="numeric"){
     DipOutputDF$Region <- as.numeric(as.character(DipOutputDF$Region))
+    }
   }
 
   ZeroXMedian <- matrix(nrow=nrow(RNAdataDF_R), ncol=1)
