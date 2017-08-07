@@ -110,12 +110,13 @@ dipExtension <- function(breaks, labels, RNAdata, rawRNAdata, minimumCounts){
 }
 
 plotSamplesByDipRegion <- function(minimumCounts, breaks, labels, rawRNAdata,
-                                  RNAdata, xlab, samples) {
+                                   RNAdata, xlab, samples) {
   # parameters: filter, break locations (1-4 OR "NONE"), labels,
   # rawRNAdata, normRNAdata, xlab(xx) (make it work from 1 to 5. No default), samples(number to be sampled)
+  
 
-  xx <- xlab
   x.1 <- 0
+  
   if(missing(minimumCounts)) {print("no filter applied")}
   if(missing(RNAdata) && missing(rawRNAdata)) {print("RNA data missing"); x.1 <- 1}
   if(missing(breaks)) {print("no breaks selected");  regions <- 1}
@@ -124,7 +125,7 @@ plotSamplesByDipRegion <- function(minimumCounts, breaks, labels, rawRNAdata,
   if(missing(samples)) {samples <- 4}
   if(missing(xlab)){xlab <- "Sample RNA Expression"}
   
-
+  
   if(mode(RNAdata)=="character") {
     RNAdata <- as.matrix(read.table(RNAdata))
   }
@@ -133,68 +134,68 @@ plotSamplesByDipRegion <- function(minimumCounts, breaks, labels, rawRNAdata,
   
   if(!missing(rawRNAdata)){
     
-  if(mode(rawRNAdata)=="character") {
-    rawRNAdata <- data.frame(read.table(rawRNAdata))
-  } else { rawRNAdata <- data.frame(rawRNAdata)}
+    if(mode(rawRNAdata)=="character") {
+      rawRNAdata <- data.frame(read.table(rawRNAdata))
+    } else { rawRNAdata <- data.frame(rawRNAdata)}
   }
   
   if(!missing(rawRNAdata) && !missing(RNAdata)){
-  RNArawcounts <- rawRNAdata
-  RNArawcounts$max <- 0
-  RNArawcounts$max <- apply(RNArawcounts, 1, max)
-  RNArawbelow50 <- RNArawcounts[which(RNArawcounts$max<minimumCounts),]
-  rr <- row.names(RNArawbelow50)
-  RNAdataDF_R <- RNAdataDF[(!row.names(RNAdataDF) %in% rr), ]
-  RNAdataMat <- as.matrix(RNAdataDF_R)
-  DipOutput <- matrix(nrow=nrow(RNAdataDF_R), ncol=1) #preparing a matrix to receive output in the function step
-  DipOutputPvals <- matrix(nrow=nrow(RNAdataDF_R), ncol=1) #preparing a matrix to receive output in the function step
+    RNArawcounts <- rawRNAdata
+    RNArawcounts$max <- 0
+    RNArawcounts$max <- apply(RNArawcounts, 1, max)
+    RNArawbelow50 <- RNArawcounts[which(RNArawcounts$max<minimumCounts),]
+    rr <- row.names(RNArawbelow50)
+    RNAdataDF_R <- RNAdataDF[(!row.names(RNAdataDF) %in% rr), ]
+    RNAdataMat <- as.matrix(RNAdataDF_R)
+    DipOutput <- matrix(nrow=nrow(RNAdataDF_R), ncol=1) #preparing a matrix to receive output in the function step
+    DipOutputPvals <- matrix(nrow=nrow(RNAdataDF_R), ncol=1) #preparing a matrix to receive output in the function step
   } else {
-  RNAdataDF_R <- RNAdataDF
-  RNAdataMat <- as.matrix(RNAdataDF_R)
-  DipOutput <- matrix(nrow=nrow(RNAdataDF_R), ncol=1)
-  DipOutputPvals <- matrix(nrow=nrow(RNAdataDF_R), ncol=1)
-}
-
+    RNAdataDF_R <- RNAdataDF
+    RNAdataMat <- as.matrix(RNAdataDF_R)
+    DipOutput <- matrix(nrow=nrow(RNAdataDF_R), ncol=1)
+    DipOutputPvals <- matrix(nrow=nrow(RNAdataDF_R), ncol=1)
+  }
   
-
+  
+  
   #setup and calculation
   for (k in 1:nrow(RNAdataMat)){
-
+    
     e <- diptest::dip(RNAdataMat[k,], full.result = FALSE, min.is.0 = FALSE, debug = FALSE) #actual dip statistical test
     f <- diptest::dip.test(RNAdataMat[k,], simulate.p.value = FALSE, B = 2000)
     DipOutput[k,1] <- e #save output into pre-prepared matrix
     DipOutputPvals[k,1] <- f$p.value
     ##consider extracting the rownames off RNAdata as a vector, which you can then reimpute here
   }
-
+  
   DipOutputDF <- data.frame(DipOutput) # matrix -> dataframe
   DipOutputPDF <- data.frame(DipOutputPvals)
   DipOutputDF$GeneID <- rownames(RNAdataDF_R)
-
+  
   if(regions==1 && missing(labels)){labels = "Undivided Sample"}
   if(regions==2 && missing(labels)){labels = c("Region A", "Region B")}
   if(regions==3 && missing(labels)){labels = c("Region A", "Region B", "Region C")}
   if(regions==4 && missing(labels)){labels = c("Region A", "Region B", "Region C", "Region D")}
   if(regions==5 && missing(labels)){labels = c("Region A", "Region B", "Region C", "Region D", "Region E")}
-
-
-  if(breaks!="NONE"){ # removed as alt condition of if clause:  | (is.numeric(breaks) && breaks > 0)
+  
+  try(xx <- xlab)
+  if(!missing(breaks) && breaks[1] !="NONE"){ # removed as alt condition of if clause:  | (is.numeric(breaks) && breaks > 0)
     DipOutputDF$Region <- cut(DipOutputDF$DipOutput,
                               breaks = breaks,
                               labels = labels,
                               right = FALSE)
     if(mode(breaks[1])=="numeric"){
-    DipOutputDF$Region <- as.numeric(as.character(DipOutputDF$Region))
+      DipOutputDF$Region <- as.numeric(as.character(DipOutputDF$Region))
     }
   }
-
+  
   ZeroXMedian <- matrix(nrow=nrow(RNAdataDF_R), ncol=1)
   ZeroIMedian <- matrix(nrow=nrow(RNAdataDF_R), ncol=1)
   row.names(ZeroXMedian) <- row.names(RNAdataDF_R)
   colnames(ZeroXMedian) <- c("Zero-excluded Median")
   row.names(ZeroIMedian) <- row.names(RNAdataDF_R)
   colnames(ZeroIMedian) <- c("Zero-included Median")
-
+  
   for(k in 1:nrow(RNAdataDF_R)) {
     shelf <- RNAdataDF_R[k,]
     row.names(shelf) <- c(1)
@@ -202,23 +203,23 @@ plotSamplesByDipRegion <- function(minimumCounts, breaks, labels, rawRNAdata,
     ZeroXMedian[k,] <- median(as.numeric(shelf2))
     ZeroIMedian[k,] <- median(as.numeric(shelf))
   }
-
-
+  
+  
   DipOutputDF$ZeroXMedian <- as.numeric(ZeroXMedian)
   DipOutputDF$ZeroIMedian <- as.numeric(ZeroIMedian)
   DipOutputDF <<- dplyr::mutate(DipOutputDF, Divergence = ZeroXMedian-ZeroIMedian)
-
-  return(DipOutputDF)
-
+  
+  
+  
   if(samples==1){sublabels = "Sample A"}
   if(samples==2){sublabels = c("Sample A", "Sample B")}
   if(samples==3){sublabels = c("Sample A", "Sample B", "Sample C")}
   if(samples==4){sublabels = c("Sample A", "Sample B", "Sample C", "Sample D")}
   if(samples==5){sublabels = c("Sample A", "Sample B", "Sample C", "Sample D", "Sample E")}
   if(samples==6){sublabels = c("Sample A", "Sample B", "Sample C", "Sample D", "Sample E", "Sample F")}
-
+  
   #plotting (executables)
-
+  
   if(regions>=1){	#pick four from whole distribution
     ifelse(regions==1, DF.1 <- DipOutputDF, DF.1 <- DipOutputDF[DipOutputDF$Region==labels[1],])
     ifelse(nrow(DF.1)<samples, print("error: too few observations
@@ -228,26 +229,26 @@ plotSamplesByDipRegion <- function(minimumCounts, breaks, labels, rawRNAdata,
     DF.1SampleGeneData <- data.frame(t(RNAdataDF_R[row.names(RNAdataDF_R) %in% DF.1Names, ]))
     SampleNames <- DF.1Names
     R1A <- paste(SampleNames[1], collapse = NULL)
-    pp1 <- ggplot2::ggplot(DF.1SampleGeneData, aes_string(x=R1A)) + ggplot2::geom_density(adjust = 1/5, color = "navy blue") + ggplot2::theme_gray() + ggplot2::ggtitle(R1A) + ggplot2::ylab("Density") + ggplot2::xlab(xx)
+    pp1 <- ggplot2::ggplot(DF.1SampleGeneData, ggplot2::aes_string(x=R1A)) + ggplot2::geom_density(adjust = 1/5, color = "navy blue") + ggplot2::theme_gray() + ggplot2::ggtitle(R1A) + ggplot2::ylab("Density") + ggplot2::xlab(xx)
     if(samples>=2){
       R1B <- paste(SampleNames[2], collapse = NULL)
-      pp2 <- ggplot2::ggplot(DF.1SampleGeneData, aes_string(x=R1B)) + ggplot2::geom_density(adjust = 1/5, color = "navy blue") + ggplot2::theme_gray() + ggplot2::xlab(xx) + ggplot2::ggtitle(R1B) + ggplot2::ylab("Density")
+      pp2 <- ggplot2::ggplot(DF.1SampleGeneData, ggplot2::aes_string(x=R1B)) + ggplot2::geom_density(adjust = 1/5, color = "navy blue") + ggplot2::theme_gray() + ggplot2::xlab(xx) + ggplot2::ggtitle(R1B) + ggplot2::ylab("Density")
     }
     if(samples>=3){
       R1C <- paste(SampleNames[3], collapse = NULL)
-      pp3 <- ggplot2::ggplot(DF.1SampleGeneData, aes_string(x=R1C)) + ggplot2::geom_density(adjust = 1/5, color = "navy blue") + ggplot2::theme_gray() + ggplot2::ggtitle(R1C) + ggplot2::ylab("Density") + ggplot2::xlab(xx)
+      pp3 <- ggplot2::ggplot(DF.1SampleGeneData, ggplot2::aes_string(x=R1C)) + ggplot2::geom_density(adjust = 1/5, color = "navy blue") + ggplot2::theme_gray() + ggplot2::ggtitle(R1C) + ggplot2::ylab("Density") + ggplot2::xlab(xx)
     }
     if(samples>=4){
       R1D <- paste(SampleNames[4], collapse = NULL)
-      pp4 <- ggplot2::ggplot(DF.1SampleGeneData, aes_string(x=R1D)) + ggplot2::geom_density(adjust = 1/5, color = "navy blue") + ggplot2::theme_gray() + ggplot2::ggtitle(R1D) + ggplot2::ylab("Density") + ggplot2::xlab(xx)
+      pp4 <- ggplot2::ggplot(DF.1SampleGeneData, ggplot2::aes_string(x=R1D)) + ggplot2::geom_density(adjust = 1/5, color = "navy blue") + ggplot2::theme_gray() + ggplot2::ggtitle(R1D) + ggplot2::ylab("Density") + ggplot2::xlab(xx)
     }
     if(samples>=5){
       R1E <- paste(SampleNames[5], collapse = NULL)
-      pp5 <- ggplot2::ggplot(DF.1SampleGeneData, aes_string(x=R1E)) + ggplot2::geom_density(adjust = 1/5, color = "navy blue") + ggplot2::theme_gray() + ggplot2::ggtitle(R1E) + ggplot2::ylab("Density") + ggplot2::xlab(xx)
+      pp5 <- ggplot2::ggplot(DF.1SampleGeneData, ggplot2::aes_string(x=R1E)) + ggplot2::geom_density(adjust = 1/5, color = "navy blue") + ggplot2::theme_gray() + ggplot2::ggtitle(R1E) + ggplot2::ylab("Density") + ggplot2::xlab(xx)
     }
     if(samples>=6){
       R1F <- paste(SampleNames[6], collapse = NULL)
-      pp6 <- ggplot2::ggplot(DF.1SampleGeneData, aes_string(x=R1F)) + ggplot2::geom_density(adjust = 1/5, color = "navy blue") + ggplot2::theme_gray() + ggplot2::ggtitle(R1F) + ggplot2::ylab("Density") + ggplot2::xlab(xx)
+      pp6 <- ggplot2::ggplot(DF.1SampleGeneData, ggplot2::aes_string(x=R1F)) + ggplot2::geom_density(adjust = 1/5, color = "navy blue") + ggplot2::theme_gray() + ggplot2::ggtitle(R1F) + ggplot2::ylab("Density") + ggplot2::xlab(xx)
     }
     if(samples==1){x1 <<- pp1}
     if(samples==2){x1 <<- gridExtra::grid.arrange(pp1, pp2, ncol=2)}
@@ -256,7 +257,7 @@ plotSamplesByDipRegion <- function(minimumCounts, breaks, labels, rawRNAdata,
     if(samples==5){x1 <<- gridExtra::grid.arrange(pp1, pp2, pp3, pp4, pp5, ncol=2)}
     if(samples==6){x1 <<- gridExtra::grid.arrange(pp1, pp2, pp3, pp4, pp5, pp6, ncol=2)}
   }
-
+  
   if(regions>=2){
     DF.2 <- DipOutputDF[DipOutputDF$Region==labels[2],]
     ifelse(nrow(DF.2)<samples, print("error: too few observations
@@ -266,26 +267,26 @@ plotSamplesByDipRegion <- function(minimumCounts, breaks, labels, rawRNAdata,
     DF.2SampleGeneData <- data.frame(t(RNAdataDF_R[row.names(RNAdataDF_R) %in% DF.2Names, ]))
     SampleNames2 <- DF.2Names
     R2A <- paste(SampleNames2[1], collapse = NULL)
-    pp1 <- ggplot2::ggplot(DF.2SampleGeneData, aes_string(x=R2A)) + ggplot2::geom_density(adjust = 1/5, color = "navy blue") + ggplot2::theme_gray() + ggplot2::ggtitle(R1A) + ggplot2::ylab("Density") + ggplot2::xlab(xx)
+    pp1 <- ggplot2::ggplot(DF.2SampleGeneData, ggplot2::aes_string(x=R2A)) + ggplot2::geom_density(adjust = 1/5, color = "navy blue") + ggplot2::theme_gray() + ggplot2::ggtitle(R2A) + ggplot2::ylab("Density") + ggplot2::xlab(xx)
     if(samples>=2){
       R2B <- paste(SampleNames2[2], collapse = NULL)
-      pp2 <- ggplot2::ggplot(DF.2SampleGeneData, aes_string(x=R2B)) + ggplot2::geom_density(adjust = 1/5, color = "navy blue") + ggplot2::theme_gray() + ggplot2::xlab(xx) + ggplot2::ggtitle(R1B) + ggplot2::ylab("Density")
+      pp2 <- ggplot2::ggplot(DF.2SampleGeneData, ggplot2::aes_string(x=R2B)) + ggplot2::geom_density(adjust = 1/5, color = "navy blue") + ggplot2::theme_gray() + ggplot2::xlab(xx) + ggplot2::ggtitle(R2B) + ggplot2::ylab("Density")
     }
     if(samples>=3){
       R2C <- paste(SampleNames2[3], collapse = NULL)
-      pp3 <- ggplot2::ggplot(DF.2SampleGeneData, aes_string(x=R2C)) + ggplot2::geom_density(adjust = 1/5, color = "navy blue") + ggplot2::theme_gray() + ggplot2::ggtitle(R1C) + ggplot2::ylab("Density") + ggplot2::xlab(xx)
+      pp3 <- ggplot2::ggplot(DF.2SampleGeneData, ggplot2::aes_string(x=R2C)) + ggplot2::geom_density(adjust = 1/5, color = "navy blue") + ggplot2::theme_gray() + ggplot2::ggtitle(R2C) + ggplot2::ylab("Density") + ggplot2::xlab(xx)
     }
     if(samples>=4){
       R2D <- paste(SampleNames2[4], collapse = NULL)
-      pp4 <- ggplot2::ggplot(DF.2SampleGeneData, aes_string(x=R2D)) + ggplot2::geom_density(adjust = 1/5, color = "navy blue") + ggplot2::theme_gray() + ggplot2::ggtitle(R1D) + ggplot2::ylab("Density") + ggplot2::xlab(xx)
+      pp4 <- ggplot2::ggplot(DF.2SampleGeneData, ggplot2::aes_string(x=R2D)) + ggplot2::geom_density(adjust = 1/5, color = "navy blue") + ggplot2::theme_gray() + ggplot2::ggtitle(R2D) + ggplot2::ylab("Density") + ggplot2::xlab(xx)
     }
     if(samples>=5){
       R2E <- paste(SampleNames2[5], collapse = NULL)
-      pp5 <- ggplot2::ggplot(DF.2SampleGeneData, aes_string(x=R2E)) + ggplot2::geom_density(adjust = 1/5, color = "navy blue") + ggplot2::theme_gray() + ggplot2::ggtitle(R1E) + ggplot2::ylab("Density") + ggplot2::xlab(xx)
+      pp5 <- ggplot2::ggplot(DF.2SampleGeneData, ggplot2::aes_string(x=R2E)) + ggplot2::geom_density(adjust = 1/5, color = "navy blue") + ggplot2::theme_gray() + ggplot2::ggtitle(R2E) + ggplot2::ylab("Density") + ggplot2::xlab(xx)
     }
     if(samples>=6){
       R2F <- paste(SampleNames2[6], collapse = NULL)
-      pp6 <- ggplot2::ggplot(DF.2SampleGeneData, aes_string(x=R2F)) + ggplot2::geom_density(adjust = 1/5, color = "navy blue") + ggplot2::theme_gray() + ggplot2::ggtitle(R1F) + ggplot2::ylab("Density") + ggplot2::xlab(xx)
+      pp6 <- ggplot2::ggplot(DF.2SampleGeneData, ggplot2::aes_string(x=R2F)) + ggplot2::geom_density(adjust = 1/5, color = "navy blue") + ggplot2::theme_gray() + ggplot2::ggtitle(R2F) + ggplot2::ylab("Density") + ggplot2::xlab(xx)
     }
     if(samples==1){x2 <<- pp1}
     if(samples==2){x2 <<- gridExtra::grid.arrange(pp1, pp2, ncol=2)}
@@ -294,7 +295,7 @@ plotSamplesByDipRegion <- function(minimumCounts, breaks, labels, rawRNAdata,
     if(samples==5){x2 <<- gridExtra::grid.arrange(pp1, pp2, pp3, pp4, pp5, ncol=2)}
     if(samples==6){x2 <<- gridExtra::grid.arrange(pp1, pp2, pp3, pp4, pp5, pp6, ncol=2)}
   }
-
+  
   if(regions>=3){
     DF.3 <- DipOutputDF[DipOutputDF$Region==labels[3],]
     ifelse(nrow(DF.3)<samples, print("error: too few observations
@@ -304,26 +305,26 @@ plotSamplesByDipRegion <- function(minimumCounts, breaks, labels, rawRNAdata,
     DF.3SampleGeneData <- data.frame(t(RNAdataDF_R[row.names(RNAdataDF_R) %in% DF.3Names, ]))
     SampleNames3 <- DF.3Names
     R3A <- paste(SampleNames3[1], collapse = NULL)
-    pp1 <- ggplot2::ggplot(DF.3SampleGeneData, aes_string(x=R3A)) + ggplot2::geom_density(adjust = 1/5, color = "navy blue") + ggplot2::theme_gray() + ggplot2::ggtitle(R3A) + ggplot2::ylab("Density") + ggplot2::xlab(xx)
+    pp1 <- ggplot2::ggplot(DF.3SampleGeneData, ggplot2::aes_string(x=R3A)) + ggplot2::geom_density(adjust = 1/5, color = "navy blue") + ggplot2::theme_gray() + ggplot2::ggtitle(R3A) + ggplot2::ylab("Density") + ggplot2::xlab(xx)
     if(samples>=2){
       R3B <- paste(SampleNames3[2], collapse = NULL)
-      pp2 <- ggplot2::ggplot(DF.3SampleGeneData, aes_string(x=R3B)) + ggplot2::geom_density(adjust = 1/5, color = "navy blue") + ggplot2::theme_gray() + ggplot2::xlab(xx) + ggplot2::ggtitle(R3B) + ggplot2::ylab("Density")
+      pp2 <- ggplot2::ggplot(DF.3SampleGeneData, ggplot2::aes_string(x=R3B)) + ggplot2::geom_density(adjust = 1/5, color = "navy blue") + ggplot2::theme_gray() + ggplot2::xlab(xx) + ggplot2::ggtitle(R3B) + ggplot2::ylab("Density")
     }
     if(samples>=3){
       R3C <- paste(SampleNames3[3], collapse = NULL)
-      pp3 <- ggplot2::ggplot(DF.3SampleGeneData, aes_string(x=R3C)) + ggplot2::geom_density(adjust = 1/5, color = "navy blue") + ggplot2::theme_gray() + ggplot2::ggtitle(R3C) + ggplot2::ylab("Density") + ggplot2::xlab(xx)
+      pp3 <- ggplot2::ggplot(DF.3SampleGeneData, ggplot2::aes_string(x=R3C)) + ggplot2::geom_density(adjust = 1/5, color = "navy blue") + ggplot2::theme_gray() + ggplot2::ggtitle(R3C) + ggplot2::ylab("Density") + ggplot2::xlab(xx)
     }
     if(samples>=4){
       R3D <- paste(SampleNames3[4], collapse = NULL)
-      pp4 <- ggplot2::ggplot(DF.3SampleGeneData, aes_string(x=R3D)) + ggplot2::geom_density(adjust = 1/5, color = "navy blue") + ggplot2::theme_gray() + ggplot2::ggtitle(R3D) + ggplot2::ylab("Density") + ggplot2::xlab(xx)
+      pp4 <- ggplot2::ggplot(DF.3SampleGeneData, ggplot2::aes_string(x=R3D)) + ggplot2::geom_density(adjust = 1/5, color = "navy blue") + ggplot2::theme_gray() + ggplot2::ggtitle(R3D) + ggplot2::ylab("Density") + ggplot2::xlab(xx)
     }
     if(samples>=5){
       R3E <- paste(SampleNames3[5], collapse = NULL)
-      pp5 <- ggplot2::ggplot(DF.3SampleGeneData, aes_string(x=R3E)) + ggplot2::geom_density(adjust = 1/5, color = "navy blue") + ggplot2::theme_gray() + ggplot2::ggtitle(R3E) + ggplot2::ylab("Density") + ggplot2::xlab(xx)
+      pp5 <- ggplot2::ggplot(DF.3SampleGeneData, ggplot2::aes_string(x=R3E)) + ggplot2::geom_density(adjust = 1/5, color = "navy blue") + ggplot2::theme_gray() + ggplot2::ggtitle(R3E) + ggplot2::ylab("Density") + ggplot2::xlab(xx)
     }
     if(samples>=6){
       R3F <- paste(SampleNames3[6], collapse = NULL)
-      pp6 <- ggplot2::ggplot(DF.2SampleGeneData, aes_string(x=R3F)) + ggplot2::geom_density(adjust = 1/5, color = "navy blue") + ggplot2::theme_gray() + ggplot2::ggtitle(R3F) + ggplot2::ylab("Density") + ggplot2::xlab(xx)
+      pp6 <- ggplot2::ggplot(DF.2SampleGeneData, ggplot2::aes_string(x=R3F)) + ggplot2::geom_density(adjust = 1/5, color = "navy blue") + ggplot2::theme_gray() + ggplot2::ggtitle(R3F) + ggplot2::ylab("Density") + ggplot2::xlab(xx)
     }
     if(samples==1){x3 <<- pp1}
     if(samples==2){x3 <<- gridExtra::grid.arrange(pp1, pp2, ncol=2)}
@@ -332,7 +333,7 @@ plotSamplesByDipRegion <- function(minimumCounts, breaks, labels, rawRNAdata,
     if(samples==5){x3 <<- gridExtra::grid.arrange(pp1, pp2, pp3, pp4, pp5, ncol=2)}
     if(samples==6){x3 <<- gridExtra::grid.arrange(pp1, pp2, pp3, pp4, pp5, pp6, ncol=2)}
   }
-
+  
   if(regions>=4){
     DF.4 <- DipOutputDF[DipOutputDF$Region==labels[4],]
     ifelse(nrow(DF.4)<samples, print("error: too few observations
@@ -342,26 +343,26 @@ plotSamplesByDipRegion <- function(minimumCounts, breaks, labels, rawRNAdata,
     DF.4SampleGeneData <- data.frame(t(RNAdataDF_R[row.names(RNAdataDF_R) %in% DF.4Names, ]))
     SampleNames4 <- DF.4Names
     R4A <- paste(SampleNames4[1], collapse = NULL)
-    pp1 <- ggplot2::ggplot(DF.4SampleGeneData, aes_string(x=R4A)) + ggplot2::geom_density(adjust = 1/5, color = "navy blue") + ggplot2::theme_gray() + ggplot2::ggtitle(R4A) + ggplot2::ylab("Density") + ggplot2::xlab(xx)
+    pp1 <- ggplot2::ggplot(DF.4SampleGeneData, ggplot2::aes_string(x=R4A)) + ggplot2::geom_density(adjust = 1/5, color = "navy blue") + ggplot2::theme_gray() + ggplot2::ggtitle(R4A) + ggplot2::ylab("Density") + ggplot2::xlab(xx)
     if(samples>=2){
       R4B <- paste(SampleNames4[2], collapse = NULL)
-      pp2 <- ggplot2::ggplot(DF.4SampleGeneData, aes_string(x=R4B)) + ggplot2::geom_density(adjust = 1/5, color = "navy blue") + ggplot2::theme_gray() + ggplot2::xlab(xx) + ggplot2::ggtitle(R4B) + ggplot2::ylab("Density")
+      pp2 <- ggplot2::ggplot(DF.4SampleGeneData, ggplot2::aes_string(x=R4B)) + ggplot2::geom_density(adjust = 1/5, color = "navy blue") + ggplot2::theme_gray() + ggplot2::xlab(xx) + ggplot2::ggtitle(R4B) + ggplot2::ylab("Density")
     }
     if(samples>=3){
       R4C <- paste(SampleNames4[3], collapse = NULL)
-      pp3 <- ggplot2::ggplot(DF.4SampleGeneData, aes_string(x=R4C)) + ggplot2::geom_density(adjust = 1/5, color = "navy blue") + ggplot2::theme_gray() + ggplot2::ggtitle(R4C) + ggplot2::ylab("Density") + ggplot2::xlab(xx)
+      pp3 <- ggplot2::ggplot(DF.4SampleGeneData, ggplot2::aes_string(x=R4C)) + ggplot2::geom_density(adjust = 1/5, color = "navy blue") + ggplot2::theme_gray() + ggplot2::ggtitle(R4C) + ggplot2::ylab("Density") + ggplot2::xlab(xx)
     }
     if(samples>=4){
       R4D <- paste(SampleNames4[4], collapse = NULL)
-      pp4 <- ggplot2::ggplot(DF.4SampleGeneData, aes_string(x=R4D)) + ggplot2::geom_density(adjust = 1/5, color = "navy blue") + ggplot2::theme_gray() + ggplot2::ggtitle(R4D) + ggplot2::ylab("Density") + ggplot2::xlab(xx)
+      pp4 <- ggplot2::ggplot(DF.4SampleGeneData, ggplot2::aes_string(x=R4D)) + ggplot2::geom_density(adjust = 1/5, color = "navy blue") + ggplot2::theme_gray() + ggplot2::ggtitle(R4D) + ggplot2::ylab("Density") + ggplot2::xlab(xx)
     }
     if(samples>=5){
       R4E <- paste(SampleNames4[5], collapse = NULL)
-      pp5 <- ggplot2::ggplot(DF.4SampleGeneData, aes_string(x=R4E)) + ggplot2::geom_density(adjust = 1/5, color = "navy blue") + ggplot2::theme_gray() + ggplot2::ggtitle(R4E) + ggplot2::ylab("Density") + ggplot2::xlab(xx)
+      pp5 <- ggplot2::ggplot(DF.4SampleGeneData, ggplot2::aes_string(x=R4E)) + ggplot2::geom_density(adjust = 1/5, color = "navy blue") + ggplot2::theme_gray() + ggplot2::ggtitle(R4E) + ggplot2::ylab("Density") + ggplot2::xlab(xx)
     }
     if(samples>=6){
       R4F <- paste(SampleNames4[6], collapse = NULL)
-      pp6 <- ggplot2::ggplot(DF.4SampleGeneData, aes_string(x=R4F)) + ggplot2::geom_density(adjust = 1/5, color = "navy blue") + ggplot2::theme_gray() + ggplot2::ggtitle(R4F) + ggplot2::ylab("Density") + ggplot2::xlab(xx)
+      pp6 <- ggplot2::ggplot(DF.4SampleGeneData, ggplot2::aes_string(x=R4F)) + ggplot2::geom_density(adjust = 1/5, color = "navy blue") + ggplot2::theme_gray() + ggplot2::ggtitle(R4F) + ggplot2::ylab("Density") + ggplot2::xlab(xx)
     }
     if(samples==1){x4 <<- pp1}
     if(samples==2){x4 <<- gridExtra::grid.arrange(pp1, pp2, ncol=2)}
@@ -370,7 +371,7 @@ plotSamplesByDipRegion <- function(minimumCounts, breaks, labels, rawRNAdata,
     if(samples==5){x4 <<- gridExtra::grid.arrange(pp1, pp2, pp3, pp4, pp5, ncol=2)}
     if(samples==6){x4 <<- gridExtra::grid.arrange(pp1, pp2, pp3, pp4, pp5, pp6, ncol=2)}
   }
-
+  
   if(regions>=5){
     DF.5 <- DipOutputDF[DipOutputDF$Region==labels[5],]
     ifelse(nrow(DF.5)<samples, print("error: too few observations
@@ -380,26 +381,26 @@ plotSamplesByDipRegion <- function(minimumCounts, breaks, labels, rawRNAdata,
     DF.5SampleGeneData <- data.frame(t(RNAdataDF_R[row.names(RNAdataDF_R) %in% DF.5Names, ]))
     SampleNames5 <- DF.5Names
     R5A <- paste(SampleNames5[1], collapse = NULL)
-    pp1 <- ggplot2::ggplot(DF.5SampleGeneData, aes_string(x=R5A)) + ggplot2::geom_density(adjust = 1/5, color = "navy blue") + ggplot2::theme_gray() + ggplot2::ggtitle(R5A) + ggplot2::ylab("Density") + ggplot2::xlab(xx)
+    pp1 <- ggplot2::ggplot(DF.5SampleGeneData, ggplot2::aes_string(x=R5A)) + ggplot2::geom_density(adjust = 1/5, color = "navy blue") + ggplot2::theme_gray() + ggplot2::ggtitle(R5A) + ggplot2::ylab("Density") + ggplot2::xlab(xx)
     if(samples>=2){
       R2B <- paste(SampleNames5[2], collapse = NULL)
-      pp2 <- ggplot2::ggplot(DF.5SampleGeneData, aes_string(x=R5B)) + ggplot2::geom_density(adjust = 1/5, color = "navy blue") + ggplot2::theme_gray() + ggplot2::xlab(xx) + ggplot2::ggtitle(R5B) + ggplot2::ylab("Density")
+      pp2 <- ggplot2::ggplot(DF.5SampleGeneData, ggplot2::aes_string(x=R5B)) + ggplot2::geom_density(adjust = 1/5, color = "navy blue") + ggplot2::theme_gray() + ggplot2::xlab(xx) + ggplot2::ggtitle(R5B) + ggplot2::ylab("Density")
     }
     if(samples>=3){
       R5C <- paste(SampleNames5[3], collapse = NULL)
-      pp3 <- ggplot2::ggplot(DF.5SampleGeneData, aes_string(x=R5C)) + ggplot2::geom_density(adjust = 1/5, color = "navy blue") + ggplot2::theme_gray() + ggplot2::ggtitle(R5C) + ggplot2::ylab("Density") + ggplot2::xlab(xx)
+      pp3 <- ggplot2::ggplot(DF.5SampleGeneData, ggplot2::aes_string(x=R5C)) + ggplot2::geom_density(adjust = 1/5, color = "navy blue") + ggplot2::theme_gray() + ggplot2::ggtitle(R5C) + ggplot2::ylab("Density") + ggplot2::xlab(xx)
     }
     if(samples>=4){
       R2D <- paste(SampleNames5[4], collapse = NULL)
-      pp4 <- ggplot2::ggplot(DF.5SampleGeneData, aes_string(x=R5D)) + ggplot2::geom_density(adjust = 1/5, color = "navy blue") + ggplot2::theme_gray() + ggplot2::ggtitle(R5D) + ggplot2::ylab("Density") + ggplot2::xlab(xx)
+      pp4 <- ggplot2::ggplot(DF.5SampleGeneData, ggplot2::aes_string(x=R5D)) + ggplot2::geom_density(adjust = 1/5, color = "navy blue") + ggplot2::theme_gray() + ggplot2::ggtitle(R5D) + ggplot2::ylab("Density") + ggplot2::xlab(xx)
     }
     if(samples>=5){
       R5E <- paste(SampleNames5[5], collapse = NULL)
-      pp5 <- ggplot2::ggplot(DF.5SampleGeneData, aes_string(x=R5E)) + ggplot2::geom_density(adjust = 1/5, color = "navy blue") + ggplot2::theme_gray() + ggplot2::ggtitle(R5E) + ggplot2::ylab("Density") + ggplot2::xlab(xx)
+      pp5 <- ggplot2::ggplot(DF.5SampleGeneData, ggplot2::aes_string(x=R5E)) + ggplot2::geom_density(adjust = 1/5, color = "navy blue") + ggplot2::theme_gray() + ggplot2::ggtitle(R5E) + ggplot2::ylab("Density") + ggplot2::xlab(xx)
     }
     if(samples>=6){
       R5F <- paste(SampleNames5[6], collapse = NULL)
-      pp6 <- ggplot2::ggplot(DF.5SampleGeneData, aes_string(x=R5F)) + ggplot2::geom_density(adjust = 1/5, color = "navy blue") + ggplot2::theme_gray() + ggplot2::ggtitle(R5F) + ggplot2::ylab("Density") + ggplot2::xlab(xx)
+      pp6 <- ggplot2::ggplot(DF.5SampleGeneData, ggplot2::aes_string(x=R5F)) + ggplot2::geom_density(adjust = 1/5, color = "navy blue") + ggplot2::theme_gray() + ggplot2::ggtitle(R5F) + ggplot2::ylab("Density") + ggplot2::xlab(xx)
     }
     if(samples==1){x5 <<- pp1}
     if(samples==2){x5 <<- gridExtra::grid.arrange(pp1, pp2, ncol=2)}
@@ -408,13 +409,9 @@ plotSamplesByDipRegion <- function(minimumCounts, breaks, labels, rawRNAdata,
     if(samples==5){x5 <<- gridExtra::grid.arrange(pp1, pp2, pp3, pp4, pp5, ncol=2)}
     if(samples==6){x5 <<- gridExtra::grid.arrange(pp1, pp2, pp3, pp4, pp5, pp6, ncol=2)}
   }
-
-  return(x1)
-  try(return(x2))
-  try(return(x3))
-  try(return(x4))
-  try(return(x5))
-
+  
+ 
+  
 }
 
 plotSamplesByName <- function(nameList, RNAdata) {
