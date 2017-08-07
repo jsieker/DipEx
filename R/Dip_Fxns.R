@@ -115,13 +115,31 @@ plotSamplesByDipRegion <- function(minimumCounts, breaks, labels, rawRNAdata,
   # rawRNAdata, normRNAdata, xlab(xx) (make it work from 1 to 5. No default), samples(number to be sampled)
   
 
-  x.1 <- 0
+  if(missing(RNAdata) && !missing(rawRNAdata)) {RNAdata <- rawRNAdata}
+  if(mode(RNAdata)=="character") {
+    RNAdata <- as.matrix(read.table(RNAdata))
+  }
+  RNAdataDF <- data.frame(RNAdata)
+  RNAdataDF <- data.frame(t(RNAdataDF)) #it looks redundant but this step is crucial if any gene names start with numbers. 
+  RNAdataDF <- data.frame(t(RNAdataDF)) #the plots will fail without it.
   
+  if(!missing(rawRNAdata)){
+    
+    if(mode(rawRNAdata)=="character") {
+      rawRNAdata <- data.frame(read.table(rawRNAdata))
+    } else { rawRNAdata <- data.frame(rawRNAdata)}
+  }
+  
+  
+  
+  
+  
+  x.1 <- 0
+
   if(missing(minimumCounts)) {print("no filter applied")}
   if(missing(RNAdata) && missing(rawRNAdata)) {print("RNA data missing"); x.1 <- 1}
   if(missing(breaks)) {print("no breaks selected");  regions <- 1}
   else(regions <- (length(breaks) - 1))
-  if(missing(RNAdata) && !missing(rawRNAdata)) {RNAdata <- rawRNAdata}
   if(missing(samples)) {samples <- 4}
   if(missing(xlab)){xlab <- "Sample RNA Expression"}
   
@@ -220,7 +238,7 @@ plotSamplesByDipRegion <- function(minimumCounts, breaks, labels, rawRNAdata,
   
   #plotting (executables)
   
-  if(regions>=1){	#pick four from whole distribution
+  if(regions>=1 && !is.na(table(DipOutputDF$Region)[1])){	#pick four from whole distribution
     ifelse(regions==1, DF.1 <- DipOutputDF, DF.1 <- DipOutputDF[DipOutputDF$Region==labels[1],])
     ifelse(nrow(DF.1)<samples, print("error: too few observations
                                      remaining in region 1 for declared sampling number to be selected"), print("Region 1 samples selected"))
@@ -258,7 +276,7 @@ plotSamplesByDipRegion <- function(minimumCounts, breaks, labels, rawRNAdata,
     if(samples==6){x1 <<- gridExtra::grid.arrange(pp1, pp2, pp3, pp4, pp5, pp6, ncol=2)}
   }
   
-  if(regions>=2){
+  if(regions>=2 && !is.na(table(DipOutputDF$Region)[1]){
     DF.2 <- DipOutputDF[DipOutputDF$Region==labels[2],]
     ifelse(nrow(DF.2)<samples, print("error: too few observations
                                      remaining in region 2 for declared number of samples to be selected"), print("Region 2 samples selected"))
@@ -296,7 +314,7 @@ plotSamplesByDipRegion <- function(minimumCounts, breaks, labels, rawRNAdata,
     if(samples==6){x2 <<- gridExtra::grid.arrange(pp1, pp2, pp3, pp4, pp5, pp6, ncol=2)}
   }
   
-  if(regions>=3){
+  if(regions>=3 && !is.na(table(DipOutputDF$Region)[1]){
     DF.3 <- DipOutputDF[DipOutputDF$Region==labels[3],]
     ifelse(nrow(DF.3)<samples, print("error: too few observations
                                      remaining in region 3 for declared number of samples to be selected"), print("Region 3 samples selected"))
@@ -334,7 +352,7 @@ plotSamplesByDipRegion <- function(minimumCounts, breaks, labels, rawRNAdata,
     if(samples==6){x3 <<- gridExtra::grid.arrange(pp1, pp2, pp3, pp4, pp5, pp6, ncol=2)}
   }
   
-  if(regions>=4){
+  if(regions>=4 && !is.na(table(DipOutputDF$Region)[1]){
     DF.4 <- DipOutputDF[DipOutputDF$Region==labels[4],]
     ifelse(nrow(DF.4)<samples, print("error: too few observations
                                      remaining in region 4 for declared number of samples to be selected"), print("Region 4 samples selected"))
@@ -372,7 +390,7 @@ plotSamplesByDipRegion <- function(minimumCounts, breaks, labels, rawRNAdata,
     if(samples==6){x4 <<- gridExtra::grid.arrange(pp1, pp2, pp3, pp4, pp5, pp6, ncol=2)}
   }
   
-  if(regions>=5){
+  if(regions>=5 && !is.na(table(DipOutputDF$Region)[1]){
     DF.5 <- DipOutputDF[DipOutputDF$Region==labels[5],]
     ifelse(nrow(DF.5)<samples, print("error: too few observations
                                      remaining in region 5 for declared number of samples to be selected"), print("Region 5 samples selected"))
