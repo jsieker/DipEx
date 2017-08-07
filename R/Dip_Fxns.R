@@ -533,8 +533,9 @@ plotSamplesByName <- function(nameList, RNAdata) {
   
 }
 
-previewDipDistribution <- function(RNAdata, rawRNAdata, minimumCounts, barLine){  #add sharpness as an argument
-  if(mode(RNAdata)=="character") {
+previewDipDistribution <- function(RNAdata, rawRNAdata, minimumCounts, barLine, adjustVal){  #add sharpness as an argument
+   if(missing(adjustVal)) {adjustVal <- 0.2} 
+   if(mode(RNAdata)=="character") {
     RNAdata <- as.matrix(read.table(RNAdata))
   }
   
@@ -573,19 +574,19 @@ previewDipDistribution <- function(RNAdata, rawRNAdata, minimumCounts, barLine){
   }
 
   DipOutputDF <- data.frame(DipOutput)
-  colnames(DipOutputDF) <- c("Dip", "p-value")
+  colnames(DipOutputDF) <- c("Dip", "p")
   row.names(DipOutputDF) <- row.names(RNAdataMat)
   DipOutputDF <<- DipOutputDF
 
   x1 <<- ggplot2::ggplot(DipOutputDF, ggplot2::aes(x=Dip)) +
-    ggplot2::geom_density() + ggplot2::geom_vline(xintercept=barLine, colour="#FF9999") +
+    ggplot2::geom_density(adjust = adjustVal) + ggplot2::geom_vline(xintercept=barLine, colour="#FF9999") +
     ggplot2::scale_x_continuous(breaks = round(seq(min(DipOutputDF$Dip), max(DipOutputDF$Dip), by = 0.01),2)) +
     ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5)) + ggplot2::labs(title= "Bimodality among RNA expression patterns",x="Hartigan's Dip Score")
 
-  x2 <<- ggplot2::ggplot(DipOutputDF, ggplot2::aes(x = p-value)) +
-    ggplot2::geom_density() + ggplot2::geom_vline(xintercept = barLine, colour = "#FF9999") +
-    ggplot2::scale_x_continuous(breaks = round(seq(min(DipOutputDF$"p-value"),
-                                          max(DipOutputDF$"p-value"), by = 0.01), 2)) + ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5)) +
+  x2 <<- ggplot2::ggplot(DipOutputDF, ggplot2::aes(x = p)) +
+    ggplot2::geom_density(adjust = adjustVal) + ggplot2::geom_vline(xintercept = barLine, colour = "#FF9999") +
+    ggplot2::scale_x_continuous(breaks = round(seq(min(DipOutputDF$p),
+                                          max(DipOutputDF$p), by = 0.01), 2)) + ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5)) +
     ggplot2::labs(title = "Bimodality among RNA expression patterns",
          x = "Hartigan's Dip Score")
 
