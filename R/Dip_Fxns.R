@@ -428,12 +428,16 @@ plotSamplesByDipRegion <- function(minimumCounts, breaks, labels, rawRNAdata,
 }
 
 plotSamplesByName <- function(nameList, RNAdata) {
-
-  if(length(nameList)==any(c(2, 4, 6))) {
+  
+  if(mode(RNAdata)=="character") {
+    RNAdata <- as.matrix(read.table(RNAdata))
+  }
+  
+  if(length(nameList) %% 2 == 0 && length(nameList) != 8) {
     ncol <- 2
   }
 
-  if(length(nameList)==any(c(3, 5, 7))) {
+  if(length(nameList) %% 2 == 1 && length(nameList) != 1) {
     ncol <- 3
   }
 
@@ -446,8 +450,8 @@ plotSamplesByName <- function(nameList, RNAdata) {
   }
 
 
-  RNAdataDF <- data.frame(read.table(RNAdata))
-  GeneData <- data.frame(t(RNAdataDF[row.nameList(RNAdataDF) %in% nameList, ]))
+  RNAdataDF <- data.frame(RNAdata)
+  GeneData <- data.frame(t(RNAdataDF[row.names(RNAdataDF) %in% nameList, ]))
   R1 <- paste(nameList[1], collapse = NULL)
   try(R2 <- paste(nameList[2], collapse = NULL))
   try(R3 <- paste(nameList[3], collapse = NULL))
@@ -456,6 +460,7 @@ plotSamplesByName <- function(nameList, RNAdata) {
   try(R6 <- paste(nameList[6], collapse = NULL))
   try(R7 <- paste(nameList[7], collapse = NULL))
   try(R8 <- paste(nameList[8], collapse = NULL))
+  
   pp1 <- ggplot2::ggplot(GeneData, ggplot2::aes_string(x=R1)) + ggplot2::geom_density(adjust = 1/5, color = "navy blue") + ggplot2::theme_gray() +
     ggplot2::ggtitle(R1) + ggplot2::ylab("Density") + ggplot2::xlab("Relative Expression")
 
@@ -525,6 +530,7 @@ plotSamplesByName <- function(nameList, RNAdata) {
   if(length(nameList)==8){
     x1 <<- gridExtra::grid.arrange(pp1, pp2, pp3, pp4, pp5, pp6, pp7, pp8, ncol = ncol)
   }
+  
 }
 
 previewDipDistribution <- function(RNAdata, rawRNAdata, minimumCounts, barLine){
