@@ -137,7 +137,7 @@ plotSamplesByDipRegion <- function(minimumCounts, breaks, labels, rawRNAdata,
   } else { rawRNAdata <- data.frame(rawRNAdata)}
   }
   
-  if(!missing(rawRNAdata) && !missing(RNAdata))){
+  if(!missing(rawRNAdata) && !missing(RNAdata)){
   RNArawcounts <- rawRNAdata
   RNArawcounts$max <- 0
   RNArawcounts$max <- apply(RNArawcounts, 1, max)
