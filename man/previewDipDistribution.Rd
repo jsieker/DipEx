@@ -8,7 +8,7 @@ Plots the distribution of the gene set's dip values and dip p-values.
 Allows the viewing of where the dataset's dip values and dip p-values are distributed to aid in the assignment of region break lines and the number of regions.
 }
 \usage{
-previewDipDistribution(RNAdata, rawRNAdata, minimumCounts, barLine)
+previewDipDistribution(RNAdata, rawRNAdata, minimumCounts, barLine, adjustVal)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -24,6 +24,9 @@ If 'rawRNAdata' is supplied, 'minimumCounts' is the threshold that each gene's m
   \item{barLine}{
 This selects the x-intercept of the bar that can be overlaid on the graph. It will default to 0 if no value is supplied.
 }
+  \item{adjustVal}{
+ggplot2 value for adjusting the sharpness of the resulting plots: ranges from 0 to 1.  	
+ }
 }
 \details{
 %%  ~~ If necessary, more details than the description above ~~
