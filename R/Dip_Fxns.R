@@ -130,10 +130,6 @@ plotSamplesByDipRegion <- function(minimumCounts, breaks, labels, rawRNAdata,
     } else { rawRNAdata <- data.frame(rawRNAdata)}
   }
   
-  
-  
-  
-  
   x.1 <- 0
 
   if(missing(minimumCounts)) {print("no filter applied")}
@@ -147,8 +143,6 @@ plotSamplesByDipRegion <- function(minimumCounts, breaks, labels, rawRNAdata,
   if(mode(RNAdata)=="character") {
     RNAdata <- as.matrix(read.table(RNAdata))
   }
-  RNAdataDF <- data.frame(RNAdata)
-  
   
   if(!missing(rawRNAdata)){
     
@@ -172,6 +166,7 @@ plotSamplesByDipRegion <- function(minimumCounts, breaks, labels, rawRNAdata,
     RNAdataMat <- as.matrix(RNAdataDF_R)
     DipOutput <- matrix(nrow=nrow(RNAdataDF_R), ncol=1)
     DipOutputPvals <- matrix(nrow=nrow(RNAdataDF_R), ncol=1)
+
   }
   
   
