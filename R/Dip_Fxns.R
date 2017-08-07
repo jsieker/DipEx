@@ -103,7 +103,7 @@ dipExtension <- function(breaks, labels, RNAdata, rawRNAdata, minimumCounts){
 
   DipOutputDF$ZeroXMedian <- as.numeric(ZeroXMedian)
   DipOutputDF$ZeroIMedian <- as.numeric(ZeroIMedian)
-  DipOutputDF <- mutate(DipOutputDF, Divergence = ZeroXMedian-ZeroIMedian)
+  DipOutputDF <- dplyr::mutate(DipOutputDF, Divergence = ZeroXMedian-ZeroIMedian)
   DipOutputDF <- DipOutputDF[,c(2, 1, 3, 4, 5, 6)]
 
 
@@ -190,7 +190,7 @@ plotSamplesByDipRegion <- function(minimumCounts, breaks, labels, rawRNAdata,
 
   DipOutputDF$ZeroXMedian <- as.numeric(ZeroXMedian)
   DipOutputDF$ZeroIMedian <- as.numeric(ZeroIMedian)
-  DipOutputDF <- mutate(DipOutputDF, Divergence = ZeroXMedian-ZeroIMedian)
+  DipOutputDF <- dplyr::mutate(DipOutputDF, Divergence = ZeroXMedian-ZeroIMedian)
 
   return(DipOutputDF)
 
