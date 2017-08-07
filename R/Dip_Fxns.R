@@ -456,41 +456,41 @@ plotSamplesByName <- function(nameList, RNAdata) {
   try(R6 <- paste(nameList[6], collapse = NULL))
   try(R7 <- paste(nameList[7], collapse = NULL))
   try(R8 <- paste(nameList[8], collapse = NULL))
-  pp1 <- ggplot2::ggplot(GeneData, aes_string(x=R1)) + ggplot2::geom_density(adjust = 1/5, color = "navy blue") + ggplot2::theme_gray() +
+  pp1 <- ggplot2::ggplot(GeneData, ggplot2::aes_string(x=R1)) + ggplot2::geom_density(adjust = 1/5, color = "navy blue") + ggplot2::theme_gray() +
     ggplot2::ggtitle(R1) + ggplot2::ylab("Density") + ggplot2::xlab("Relative Expression")
 
   if(!is.na(nameList[2])) {
-    pp2 <- ggplot2::ggplot(GeneData, aes_string(x=R2)) + ggplot2::geom_density(adjust = 1/5, color = "navy blue") + ggplot2::theme_gray() +
+    pp2 <- ggplot2::ggplot(GeneData, ggplot2::aes_string(x=R2)) + ggplot2::geom_density(adjust = 1/5, color = "navy blue") + ggplot2::theme_gray() +
       ggplot2::ggtitle(R2) + ggplot2::ylab("Density") + ggplot2::xlab("Relative Expression")
   }
 
   if(!is.na(nameList[3])) {
-    pp3 <- ggplot2::ggplot(GeneData, aes_string(x=R3)) + ggplot2::geom_density(adjust = 1/5, color = "navy blue") + ggplot2::theme_gray() +
+    pp3 <- ggplot2::ggplot(GeneData, ggplot2::aes_string(x=R3)) + ggplot2::geom_density(adjust = 1/5, color = "navy blue") + ggplot2::theme_gray() +
       ggplot2::ggtitle(R3) + ggplot2::ylab("Density") + ggplot2::xlab("Relative Expression")
   }
 
   if(!is.na(nameList[4])) {
-    pp4 <- ggplot2::ggplot(GeneData, aes_string(x=R4)) + ggplot2::geom_density(adjust = 1/5, color = "navy blue") + ggplot2::theme_gray() +
+    pp4 <- ggplot2::ggplot(GeneData, ggplot2::aes_string(x=R4)) + ggplot2::geom_density(adjust = 1/5, color = "navy blue") + ggplot2::theme_gray() +
       ggplot2::ggtitle(R4) + ggplot2::ylab("Density") + ggplot2::xlab("Relative Expression")
   }
 
   if(!is.na(nameList[5])) {
-    pp5 <- ggplot2::ggplot(GeneData, aes_string(x=R5)) + ggplot2::geom_density(adjust = 1/5, color = "navy blue") + ggplot2::theme_gray() +
+    pp5 <- ggplot2::ggplot(GeneData, ggplot2::aes_string(x=R5)) + ggplot2::geom_density(adjust = 1/5, color = "navy blue") + ggplot2::theme_gray() +
       ggplot2::ggtitle(R5) + ggplot2::ylab("Density") + ggplot2::xlab("Relative Expression")
   }
 
   if(!is.na(nameList[6])) {
-    pp6 <- ggplot2::ggplot(GeneData, aes_string(x=R6)) + ggplot2::geom_density(adjust = 1/5, color = "navy blue") + ggplot2::theme_gray() +
+    pp6 <- ggplot2::ggplot(GeneData, ggplot2::aes_string(x=R6)) + ggplot2::geom_density(adjust = 1/5, color = "navy blue") + ggplot2::theme_gray() +
       ggplot2::ggtitle(R6) + ggplot2::ylab("Density") + ggplot2::xlab("Relative Expression")
   }
 
   if(!is.na(nameList[7])) {
-    pp7 <- ggplot2::ggplot(GeneData, aes_string(x=R7)) + ggplot2::geom_density(adjust = 1/5, color = "navy blue") + ggplot2::theme_gray() +
+    pp7 <- ggplot2::ggplot(GeneData, ggplot2::aes_string(x=R7)) + ggplot2::geom_density(adjust = 1/5, color = "navy blue") + ggplot2::theme_gray() +
       ggplot2::ggtitle(R7) + ggplot2::ylab("Density") + ggplot2::xlab("Relative Expression")
   }
 
   if(!is.na(nameList[8])) {
-    pp8 <- ggplot2::ggplot(GeneData, aes_string(x=R8)) + ggplot2::geom_density(adjust = 1/5, color = "navy blue") + ggplot2::theme_gray() +
+    pp8 <- ggplot2::ggplot(GeneData, ggplot2::aes_string(x=R8)) + ggplot2::geom_density(adjust = 1/5, color = "navy blue") + ggplot2::theme_gray() +
       ggplot2::ggtitle(R8) + ggplot2::ylab("Density") + ggplot2::xlab("Relative Expression")
   }
 
