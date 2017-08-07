@@ -129,8 +129,12 @@ plotSamplesByDipRegion <- function(minimumCounts, breaks, labels, rawRNAdata,
   }
   RNAdataDF <- data.frame(RNAdata)
   
-  if(!missing(rawRNAdata && mode(rawRNAdata)=="character") {
-    rawRNAdata <- as.matrix(read.table(rawRNAdata))
+  
+  if(!missing(rawRNAdata)){
+    
+  if(mode(rawRNAdata)=="character") {
+    rawRNAdata <- data.frame(read.table(rawRNAdata))
+  } else { rawRNAdata <- data.frame(rawRNAdata)}
   }
   
   if(!missing(rawRNAdata && !missing(RNAdata))){
