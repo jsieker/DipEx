@@ -533,8 +533,11 @@ plotSamplesByName <- function(nameList, RNAdata) {
   
 }
 
-previewDipDistribution <- function(RNAdata, rawRNAdata, minimumCounts, barLine){
-
+previewDipDistribution <- function(RNAdata, rawRNAdata, minimumCounts, barLine){  #add sharpness as an argument
+  if(mode(RNAdata)=="character") {
+    RNAdata <- as.matrix(read.table(RNAdata))
+  }
+  
   RNAdataMat <- as.matrix(RNAdata)
   if(missing(barLine)){barLine <- 0}
 
@@ -578,8 +581,7 @@ previewDipDistribution <- function(RNAdata, rawRNAdata, minimumCounts, barLine){
                                           max(DipOutputDF$p-value), by = 0.01), 2)) + ggplot2::theme(plot.title = element_text(hjust = 0.5)) +
     ggplot2::labs(title = "Bimodality among RNA expression patterns",
          x = "Hartigan's Dip Score")
-  return(x1)
-  return(x2)
+
 }
 
 #make the adjust into an argument
