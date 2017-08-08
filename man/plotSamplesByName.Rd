@@ -29,7 +29,7 @@ A plot called 'x1' is returned from this function.
 H. Wickham. ggplot2: Elegant Graphics for Data Analysis. Springer-Verlag New York, 2009.
 }
 \author{
-Software authors: Sohyon Lee, Jeremy Sieker, Kristin Baldwin
+Software authors: Jeremy Sieker, Sohyon Lee, Kristin Baldwin
 
 }
 \note{

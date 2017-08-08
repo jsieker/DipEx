@@ -40,5 +40,5 @@ Martin Maechler (2016). diptest: Hartigan's Dip Test Statistic for Unimodality -
 H. Wickham. ggplot2: Elegant Graphics for Data Analysis. Springer-Verlag New York, 2009.
 }
 \author{
-Software authors: Sohyon Lee, Jeremy Sieker, Kristin Baldwin
+Software authors: Jeremy Sieker, Sohyon Lee, Kristin Baldwin
 }

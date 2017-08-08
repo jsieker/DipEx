@@ -2,7 +2,7 @@ Package: DipEx
 Type: Package
 Title: Analysis of RNAseq data distributions through visualization and Hartigan's Dip test
 Version: 0.1.0
-Authors@R: c(person("Sohyon", "Lee", email = "sohyon@scripps.edu", role = c("aut")), person("Jeremy", "Sieker", email = "jsieker@ucsd.edu", role = c("aut", "cre")), person("Kristin", "Baldwin", email = "kbaldwin@scripps.edu", role = c("aut"))  )
+Authors@R: c(person("Jeremy", "Sieker", email = "jsieker@ucsd.edu", role = c("aut", "cre”)), person("Sohyon", "Lee", email = "sohyon@scripps.edu", role = c("aut")), person("Kristin", "Baldwin", email = "kbaldwin@scripps.edu", role = c("aut"))  )
 Description: Conducts dip analysis on RNA expression data to evaluate the trends in how individual genes differ in expression across samples. Genes demonstrating different levels of bimodality in their cross-sample distributions are easily identified and grouped for further analysis. To aid with the understanding and exploration of the dip results, plots can be generated to visualize the distributions of genes randomly selected from each region of dip output.
 Depends: R (>= 3.4.1)
 License: GPL-2

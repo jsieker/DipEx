@@ -37,7 +37,7 @@ The output of this function is a dataframe called 'DipOutputDF'.
 Martin Maechler (2016). diptest: Hartigan's Dip Test Statistic for Unimodality - Corrected. R package version 0.75-7. https://CRAN.R-project.org/package=diptest
 }
 \author{
-Software authors: Sohyon Lee, Jeremy Sieker, Kristin Baldwin
+Software authors: Jeremy Sieker, Sohyon Lee, Kristin Baldwin
 
 
 }
