@@ -104,8 +104,8 @@ dipExtension <- function(breaks, labels, RNAdata, rawRNAdata, minimumCounts){
   DipOutputDF$ZeroXMedian <- as.numeric(ZeroXMedian)
   DipOutputDF$ZeroIMedian <- as.numeric(ZeroIMedian)
   DipOutputDF <- dplyr::mutate(DipOutputDF, Divergence = ZeroXMedian-ZeroIMedian)
-  DipOutputDF <<- DipOutputDF[,c(2, 1, 3, 4, 5, 6)]
-  return(DipOutputDF)
+  DipOutputDF <- DipOutputDF[,c(2, 1, 3, 4, 5, 6)]
+  DipOutputDF
 
 }
 
@@ -114,7 +114,11 @@ plotSamplesByDipRegion <- function(minimumCounts, breaks, labels, rawRNAdata,
   # parameters: filter, break locations (1-4 OR "NONE"), labels,
   # rawRNAdata, normRNAdata, xlab(xx) (make it work from 1 to 5. No default), samples(number to be sampled)
   
-
+  first <- 0
+  second <- 0
+  third <- 0
+  fourth <- 0
+  fifth <- 0
   if(missing(RNAdata) && !missing(rawRNAdata)) {RNAdata <- rawRNAdata}
   if(mode(RNAdata)=="character") {
     RNAdata <- as.matrix(read.table(RNAdata))
@@ -220,7 +224,7 @@ plotSamplesByDipRegion <- function(minimumCounts, breaks, labels, rawRNAdata,
   
   DipOutputDF$ZeroXMedian <- as.numeric(ZeroXMedian)
   DipOutputDF$ZeroIMedian <- as.numeric(ZeroIMedian)
-  DipOutputDF <<- dplyr::mutate(DipOutputDF, Divergence = ZeroXMedian-ZeroIMedian)
+  DipOutputDF <- dplyr::mutate(DipOutputDF, Divergence = ZeroXMedian-ZeroIMedian)
   
   
   
@@ -263,12 +267,13 @@ plotSamplesByDipRegion <- function(minimumCounts, breaks, labels, rawRNAdata,
       R1F <- paste(SampleNames[6], collapse = NULL)
       pp6 <- ggplot2::ggplot(DF.1SampleGeneData, ggplot2::aes_string(x=R1F)) + ggplot2::geom_density(adjust = 1/5, color = "navy blue") + ggplot2::theme_gray() + ggplot2::ggtitle(R1F) + ggplot2::ylab("Density") + ggplot2::xlab(xx)
     }
-    if(samples==1){x1 <<- pp1}
-    if(samples==2){x1 <<- gridExtra::grid.arrange(pp1, pp2, ncol=2)}
-    if(samples==3){x1 <<- gridExtra::grid.arrange(pp1, pp2, pp3, ncol=3)}
-    if(samples==4){x1 <<- gridExtra::grid.arrange(pp1, pp2, pp3, pp4,  ncol=2)}
-    if(samples==5){x1 <<- gridExtra::grid.arrange(pp1, pp2, pp3, pp4, pp5, ncol=2)}
-    if(samples==6){x1 <<- gridExtra::grid.arrange(pp1, pp2, pp3, pp4, pp5, pp6, ncol=2)}
+    if(samples==1){x1 <- pp1}
+    if(samples==2){x1 <- gridExtra::grid.arrange(pp1, pp2, ncol=2)}
+    if(samples==3){x1 <- gridExtra::grid.arrange(pp1, pp2, pp3, ncol=3)}
+    if(samples==4){x1 <- gridExtra::grid.arrange(pp1, pp2, pp3, pp4,  ncol=2)}
+    if(samples==5){x1 <- gridExtra::grid.arrange(pp1, pp2, pp3, pp4, pp5, ncol=2)}
+    if(samples==6){x1 <- gridExtra::grid.arrange(pp1, pp2, pp3, pp4, pp5, pp6, ncol=2)}
+    first <- x1
   }
   
   if(regions>=2 && !is.na(table(DipOutputDF$Region)[1])){
@@ -301,13 +306,14 @@ plotSamplesByDipRegion <- function(minimumCounts, breaks, labels, rawRNAdata,
       R2F <- paste(SampleNames2[6], collapse = NULL)
       pp6 <- ggplot2::ggplot(DF.2SampleGeneData, ggplot2::aes_string(x=R2F)) + ggplot2::geom_density(adjust = 1/5, color = "navy blue") + ggplot2::theme_gray() + ggplot2::ggtitle(R2F) + ggplot2::ylab("Density") + ggplot2::xlab(xx)
     }
-    if(samples==1){x2 <<- pp1}
-    if(samples==2){x2 <<- gridExtra::grid.arrange(pp1, pp2, ncol=2)}
-    if(samples==3){x2 <<- gridExtra::grid.arrange(pp1, pp2, pp3, ncol=3)}
-    if(samples==4){x2 <<- gridExtra::grid.arrange(pp1, pp2, pp3, pp4,  ncol=2)}
-    if(samples==5){x2 <<- gridExtra::grid.arrange(pp1, pp2, pp3, pp4, pp5, ncol=2)}
-    if(samples==6){x2 <<- gridExtra::grid.arrange(pp1, pp2, pp3, pp4, pp5, pp6, ncol=2)}
-  }
+    if(samples==1){x2 <- pp1}
+    if(samples==2){x2 <- gridExtra::grid.arrange(pp1, pp2, ncol=2)}
+    if(samples==3){x2 <- gridExtra::grid.arrange(pp1, pp2, pp3, ncol=3)}
+    if(samples==4){x2 <- gridExtra::grid.arrange(pp1, pp2, pp3, pp4,  ncol=2)}
+    if(samples==5){x2 <- gridExtra::grid.arrange(pp1, pp2, pp3, pp4, pp5, ncol=2)}
+    if(samples==6){x2 <- gridExtra::grid.arrange(pp1, pp2, pp3, pp4, pp5, pp6, ncol=2)}
+    second <- x2  
+    }
   
   if(regions>=3 && !is.na(table(DipOutputDF$Region)[1])){
     DF.3 <- DipOutputDF[DipOutputDF$Region==labels[3],]
@@ -339,13 +345,14 @@ plotSamplesByDipRegion <- function(minimumCounts, breaks, labels, rawRNAdata,
       R3F <- paste(SampleNames3[6], collapse = NULL)
       pp6 <- ggplot2::ggplot(DF.2SampleGeneData, ggplot2::aes_string(x=R3F)) + ggplot2::geom_density(adjust = 1/5, color = "navy blue") + ggplot2::theme_gray() + ggplot2::ggtitle(R3F) + ggplot2::ylab("Density") + ggplot2::xlab(xx)
     }
-    if(samples==1){x3 <<- pp1}
-    if(samples==2){x3 <<- gridExtra::grid.arrange(pp1, pp2, ncol=2)}
-    if(samples==3){x3 <<- gridExtra::grid.arrange(pp1, pp2, pp3, ncol=3)}
-    if(samples==4){x3 <<- gridExtra::grid.arrange(pp1, pp2, pp3, pp4,  ncol=2)}
-    if(samples==5){x3 <<- gridExtra::grid.arrange(pp1, pp2, pp3, pp4, pp5, ncol=2)}
-    if(samples==6){x3 <<- gridExtra::grid.arrange(pp1, pp2, pp3, pp4, pp5, pp6, ncol=2)}
-  }
+    if(samples==1){x3 <- pp1}
+    if(samples==2){x3 <- gridExtra::grid.arrange(pp1, pp2, ncol=2)}
+    if(samples==3){x3 <- gridExtra::grid.arrange(pp1, pp2, pp3, ncol=3)}
+    if(samples==4){x3 <- gridExtra::grid.arrange(pp1, pp2, pp3, pp4,  ncol=2)}
+    if(samples==5){x3 <- gridExtra::grid.arrange(pp1, pp2, pp3, pp4, pp5, ncol=2)}
+    if(samples==6){x3 <- gridExtra::grid.arrange(pp1, pp2, pp3, pp4, pp5, pp6, ncol=2)}
+    third <- x3  
+    }
   
   if(regions>=4 && !is.na(table(DipOutputDF$Region)[1])){
     DF.4 <- DipOutputDF[DipOutputDF$Region==labels[4],]
@@ -377,13 +384,14 @@ plotSamplesByDipRegion <- function(minimumCounts, breaks, labels, rawRNAdata,
       R4F <- paste(SampleNames4[6], collapse = NULL)
       pp6 <- ggplot2::ggplot(DF.4SampleGeneData, ggplot2::aes_string(x=R4F)) + ggplot2::geom_density(adjust = 1/5, color = "navy blue") + ggplot2::theme_gray() + ggplot2::ggtitle(R4F) + ggplot2::ylab("Density") + ggplot2::xlab(xx)
     }
-    if(samples==1){x4 <<- pp1}
-    if(samples==2){x4 <<- gridExtra::grid.arrange(pp1, pp2, ncol=2)}
-    if(samples==3){x4 <<- gridExtra::grid.arrange(pp1, pp2, pp3, ncol=3)}
-    if(samples==4){x4 <<- gridExtra::grid.arrange(pp1, pp2, pp3, pp4,  ncol=2)}
-    if(samples==5){x4 <<- gridExtra::grid.arrange(pp1, pp2, pp3, pp4, pp5, ncol=2)}
-    if(samples==6){x4 <<- gridExtra::grid.arrange(pp1, pp2, pp3, pp4, pp5, pp6, ncol=2)}
-  }
+    if(samples==1){x4 <- pp1}
+    if(samples==2){x4 <- gridExtra::grid.arrange(pp1, pp2, ncol=2)}
+    if(samples==3){x4 <- gridExtra::grid.arrange(pp1, pp2, pp3, ncol=3)}
+    if(samples==4){x4 <- gridExtra::grid.arrange(pp1, pp2, pp3, pp4,  ncol=2)}
+    if(samples==5){x4 <- gridExtra::grid.arrange(pp1, pp2, pp3, pp4, pp5, ncol=2)}
+    if(samples==6){x4 <- gridExtra::grid.arrange(pp1, pp2, pp3, pp4, pp5, pp6, ncol=2)}
+    fourth <- x4
+    }
   
   if(regions>=5 && !is.na(table(DipOutputDF$Region)[1])){
     DF.5 <- DipOutputDF[DipOutputDF$Region==labels[5],]
@@ -415,15 +423,16 @@ plotSamplesByDipRegion <- function(minimumCounts, breaks, labels, rawRNAdata,
       R5F <- paste(SampleNames5[6], collapse = NULL)
       pp6 <- ggplot2::ggplot(DF.5SampleGeneData, ggplot2::aes_string(x=R5F)) + ggplot2::geom_density(adjust = 1/5, color = "navy blue") + ggplot2::theme_gray() + ggplot2::ggtitle(R5F) + ggplot2::ylab("Density") + ggplot2::xlab(xx)
     }
-    if(samples==1){x5 <<- pp1}
-    if(samples==2){x5 <<- gridExtra::grid.arrange(pp1, pp2, ncol=2)}
-    if(samples==3){x5 <<- gridExtra::grid.arrange(pp1, pp2, pp3, ncol=3)}
-    if(samples==4){x5 <<- gridExtra::grid.arrange(pp1, pp2, pp3, pp4,  ncol=2)}
-    if(samples==5){x5 <<- gridExtra::grid.arrange(pp1, pp2, pp3, pp4, pp5, ncol=2)}
-    if(samples==6){x5 <<- gridExtra::grid.arrange(pp1, pp2, pp3, pp4, pp5, pp6, ncol=2)}
-  }
+    if(samples==1){x5 <- pp1}
+    if(samples==2){x5 <- gridExtra::grid.arrange(pp1, pp2, ncol=2)}
+    if(samples==3){x5 <- gridExtra::grid.arrange(pp1, pp2, pp3, ncol=3)}
+    if(samples==4){x5 <- gridExtra::grid.arrange(pp1, pp2, pp3, pp4,  ncol=2)}
+    if(samples==5){x5 <- gridExtra::grid.arrange(pp1, pp2, pp3, pp4, pp5, ncol=2)}
+    if(samples==6){x5 <- gridExtra::grid.arrange(pp1, pp2, pp3, pp4, pp5, pp6, ncol=2)}
+    fifth <- x5
+     }
   
- 
+ list(DF = DipOutputDF, Plot1 = first, Plot2 = second, Plot3 = third, Plot4 = fourth, Plot5 = fifth)
   
 }
 
@@ -449,7 +458,7 @@ plotSamplesByName <- function(nameList, RNAdata) {
     ncol <- 4
   }
 
-
+  plot1 <- 0
   RNAdataDF <- data.frame(RNAdata)
   GeneData <- data.frame(t(RNAdataDF[row.names(RNAdataDF) %in% nameList, ]))
   R1 <- paste(nameList[1], collapse = NULL)
@@ -500,37 +509,38 @@ plotSamplesByName <- function(nameList, RNAdata) {
   }
 
   if(length(nameList)==1){
-    x1 <<- pp1
+    x1 <- pp1
   }
 
   if(length(nameList)==2){
-    x1 <<- gridExtra::grid.arrange(pp1, pp2, ncol = ncol)
+    x1 <- gridExtra::grid.arrange(pp1, pp2, ncol = ncol)
   }
 
   if(length(nameList)==3){
-    x1 <<- gridExtra::grid.arrange(pp1, pp2, pp3, ncol = ncol)
+    x1 <- gridExtra::grid.arrange(pp1, pp2, pp3, ncol = ncol)
   }
 
   if(length(nameList)==4){
-    x1 <<- gridExtra::grid.arrange(pp1, pp2, pp3, pp4, ncol = ncol)
+    x1 <- gridExtra::grid.arrange(pp1, pp2, pp3, pp4, ncol = ncol)
   }
 
   if(length(nameList)==5){
-    x1 <<- gridExtra::grid.arrange(pp1, pp2, pp3, pp4, pp5, ncol = ncol)
+    x1 <- gridExtra::grid.arrange(pp1, pp2, pp3, pp4, pp5, ncol = ncol)
   }
 
   if(length(nameList)==6){
-    x1 <<- gridExtra::grid.arrange(pp1, pp2, pp3, pp4, pp5, pp6, ncol = ncol)
+    x1 <- gridExtra::grid.arrange(pp1, pp2, pp3, pp4, pp5, pp6, ncol = ncol)
   }
 
   if(length(nameList)==7){
-    x1 <<- gridExtra::grid.arrange(pp1, pp2, pp3, pp4, pp5, pp6, pp7, ncol = ncol)
+    x1 <- gridExtra::grid.arrange(pp1, pp2, pp3, pp4, pp5, pp6, pp7, ncol = ncol)
   }
 
   if(length(nameList)==8){
-    x1 <<- gridExtra::grid.arrange(pp1, pp2, pp3, pp4, pp5, pp6, pp7, pp8, ncol = ncol)
+    x1 <- gridExtra::grid.arrange(pp1, pp2, pp3, pp4, pp5, pp6, pp7, pp8, ncol = ncol)
   }
-  
+  plot1 <- x1
+  plot1
 }
 
 previewDipDistribution <- function(RNAdata, rawRNAdata, minimumCounts, barLine, adjustVal){  #add sharpness as an argument
@@ -576,20 +586,20 @@ previewDipDistribution <- function(RNAdata, rawRNAdata, minimumCounts, barLine, 
   DipOutputDF <- data.frame(DipOutput)
   colnames(DipOutputDF) <- c("Dip", "p")
   row.names(DipOutputDF) <- row.names(RNAdataMat)
-  DipOutputDF <<- DipOutputDF
+  DipOutputDF <- DipOutputDF
 
-  x1 <<- ggplot2::ggplot(DipOutputDF, ggplot2::aes(x=Dip)) +
+  x1 <- ggplot2::ggplot(DipOutputDF, ggplot2::aes(x=Dip)) +
     ggplot2::geom_density(adjust = adjustVal) + ggplot2::geom_vline(xintercept=barLine, colour="#FF9999") +
     ggplot2::scale_x_continuous(breaks = round(seq(min(DipOutputDF$Dip), max(DipOutputDF$Dip), by = 0.01),2)) +
     ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5)) + ggplot2::labs(title= "Bimodality among RNA expression patterns",x="Hartigan's Dip Score")
 
-  x2 <<- ggplot2::ggplot(DipOutputDF, ggplot2::aes(x = p)) +
+  x2 <- ggplot2::ggplot(DipOutputDF, ggplot2::aes(x = p)) +
     ggplot2::geom_density(adjust = adjustVal) + ggplot2::geom_vline(xintercept = barLine, colour = "#FF9999") +
     ggplot2::scale_x_continuous(breaks = round(seq(min(DipOutputDF$p),
                                           max(DipOutputDF$p), by = 0.1), 2)) + ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5)) +
     ggplot2::labs(title = "Bimodality among RNA expression patterns",
          x = "Hartigan's Dip p-value")
-
+  list(DF = DipOutputDF, DipPlot = x1, PvalPlot = x2)
 }
 
 #make the adjust into an argument

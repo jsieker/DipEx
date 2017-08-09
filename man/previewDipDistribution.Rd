@@ -25,12 +25,10 @@ If 'rawRNAdata' is supplied, 'minimumCounts' is the threshold that each gene's m
 This selects the x-intercept of the bar that can be overlaid on the graph. It will default to 0 if no value is supplied.
 }
   \item{adjustVal}{
-ggplot2 value for adjusting the sharpness of the resulting plots: ranges from 0 to 1.  	
+ggplot2 value for adjusting the sharpness of the resulting plots: ranges from 0 to 1.
  }
 }
-\details{
-%%  ~~ If necessary, more details than the description above ~~
-}
+
 \value{
 This function returns a dataframe (DipOutputDF) with the each gene's dip values and dip p-values, a density plot of the genes' dip values (x1), and a density plot of the genes' dip p-values (x2), viewable with 'plot(x1)' or 'plot(x2)'.
 }

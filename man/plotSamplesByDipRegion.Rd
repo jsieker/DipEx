@@ -33,14 +33,14 @@ This argument specifies the RNAseq dataset to be analyzed. It may be in the form
 Provides a standardized x-axis label for the output plots.
 }
   \item{samples}{
-This specifies the number of samples to be selected from each region and may range from 1-6, with a default of 4 if not specified by the user.
+This specifies the number of samples to be selected from each region and may range from 1-6. Using a smaller number of samples helps with reliability and '4' is the recommended, and default, value for 'samples'.
 }
 }
 \details{
-%%  ~~ If necessary, more details than the description above ~~
+The sampling starts to break down at the upper end of the dip distribution. Typically, the plots become unreliable when the number of samples exceeds 4 and when the dip values of the samples in the region exceed 0.12.
 }
 \value{
-Plots are returned from this function grouped by their region of gene origin. The number of regions determines how many sets of plots are returned. If only one region is used, the output plot is called 'x1'. If two, 'x1' and x2'. The same applied up through five regions, at which point the five plots will be titled 'x1', 'x2', 'x3', 'x4', and 'x5'. The number on the plot name indicates which region number the samples are pulled from: dip value ascending with title number.
+Plots are returned from this function grouped by their region of gene origin. The number of regions determines how many sets of plots are returned. If only one region is used, the output plot is called 'x1'. If two, 'x1' and x2'. The same applied up through five regions, at which point the five plots will be titled 'x1', 'x2', 'x3', 'x4', and 'x5'. The number on the plot name indicates which region number the samples are pulled from: dip value ascending with title number. Use 'plot(x1)' to view for each respective plot.
 }
 \references{
 Martin Maechler (2016). diptest: Hartigan's Dip Test Statistic for Unimodality - Corrected. R package version 0.75-7. https://CRAN.R-project.org/package=diptest
@@ -51,17 +51,7 @@ H. Wickham. ggplot2: Elegant Graphics for Data Analysis. Springer-Verlag New Yor
 Software authors: Jeremy Sieker, Sohyon Lee, Kristin Baldwin
 
 }
-\note{
-%%  ~~further notes~~
-}
 
-%% ~Make other sections like Warning with \section{Warning }{....} ~
-
-\seealso{
-%% ~~objects to See Also as \code{\link{help}}, ~~~
-}
-\examples{
-}
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
 \keyword{ ~kwd1 }% use one of  RShowDoc("KEYWORDS")

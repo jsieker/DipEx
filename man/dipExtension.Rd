@@ -27,9 +27,7 @@ This is an optional argument used only when a 'minimumCounts' filter is to be ap
 If 'rawRNAdata' is supplied, 'minimumCounts' is the threshold that each gene's maximum raw expression value must exceed to remain in the normalized RNA data for the analysis.
 }
 }
-\details{
 
-}
 \value{
 The output of this function is a dataframe called 'DipOutputDF'.
 }
@@ -39,15 +37,4 @@ Martin Maechler (2016). diptest: Hartigan's Dip Test Statistic for Unimodality -
 \author{
 Software authors: Jeremy Sieker, Sohyon Lee, Kristin Baldwin
 
-
-}
-\note{
-%%  ~~further notes~~
-}
-
-
-\seealso{
-%%
-}
-\examples{
 }
