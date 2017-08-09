@@ -30,7 +30,7 @@ ggplot2 value for adjusting the sharpness of the resulting plots: ranges from 0 
 }
 
 \value{
-This function returns a dataframe (DipOutputDF) with the each gene's dip values and dip p-values, a density plot of the genes' dip values (x1), and a density plot of the genes' dip p-values (x2), viewable with 'plot(x1)' or 'plot(x2)'.
+This function returns a dataframe (DF) with the each gene's dip values and dip p-values, a density plot of the genes' dip values (DipPlot), and a density plot of the genes' dip p-values (PvalPlot).
 }
 \references{
 Martin Maechler (2016). diptest: Hartigan's Dip Test Statistic for Unimodality - Corrected. R package version 0.75-7. https://CRAN.R-project.org/package=diptest

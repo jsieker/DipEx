@@ -40,7 +40,7 @@ This specifies the number of samples to be selected from each region and may ran
 The sampling starts to break down at the upper end of the dip distribution. Typically, the plots become unreliable when the number of samples exceeds 4 and when the dip values of the samples in the region exceed 0.12.
 }
 \value{
-Plots are returned from this function grouped by their region of gene origin. The number of regions determines how many sets of plots are returned. If only one region is used, the output plot is called 'x1'. If two, 'x1' and x2'. The same applied up through five regions, at which point the five plots will be titled 'x1', 'x2', 'x3', 'x4', and 'x5'. The number on the plot name indicates which region number the samples are pulled from: dip value ascending with title number. Use 'plot(x1)' to view for each respective plot.
+The output of this function is a list containing the elements DF (Dip and region output dataframe) and plots for the samples from regions 1-5 (Plot1, Plot2, Plot3, Plot4, Plot5). If fewer than five regions are sampled, the upper regions' plot variables will simply read '0'.
 }
 \references{
 Martin Maechler (2016). diptest: Hartigan's Dip Test Statistic for Unimodality - Corrected. R package version 0.75-7. https://CRAN.R-project.org/package=diptest

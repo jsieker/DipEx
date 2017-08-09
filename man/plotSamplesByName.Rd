@@ -21,7 +21,7 @@ This argument specifies the RNAseq dataset from which the specified genes' expre
 }
 
 \value{
-A plot called 'x1' is returned from this function.
+A single plot is the output of this function.
 }
 \references{
 H. Wickham. ggplot2: Elegant Graphics for Data Analysis. Springer-Verlag New York, 2009.

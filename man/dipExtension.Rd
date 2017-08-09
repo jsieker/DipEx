@@ -29,7 +29,9 @@ If 'rawRNAdata' is supplied, 'minimumCounts' is the threshold that each gene's m
 }
 
 \value{
-The output of this function is a dataframe called 'DipOutputDF'.
+The output of this function is a dataframe containing each gene's GeneID, dip information, region assignment, zero-excluded median, and zero-included median.
+
+The zero-excluded median (ZXM) is a value that takes the average of every expression value (raw or normalized) that exceeds zero. It is a measure developed as a metric for how intensely expression is elevated when highly bimodal genes are activated. The zero-included median includes zeroes in that calculation.
 }
 \references{
 Martin Maechler (2016). diptest: Hartigan's Dip Test Statistic for Unimodality - Corrected. R package version 0.75-7. https://CRAN.R-project.org/package=diptest

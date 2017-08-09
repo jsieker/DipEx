@@ -27,10 +27,10 @@ dipExtension <- function(breaks, labels, RNAdata, rawRNAdata, minimumCounts){
   if(x.1==1) {if(length(breaks) != (length(labels) + 1)) {print("invalid dimensions of breaks and labels")}}
   if(mode(RNAdata)=="character") {
   	RNAdata <- as.matrix(read.table(RNAdata))
-  	
+
   }
-  
- 
+
+
   RNAdataDF <- data.frame(RNAdata)
 
 
@@ -113,7 +113,7 @@ plotSamplesByDipRegion <- function(minimumCounts, breaks, labels, rawRNAdata,
                                    RNAdata, xlab, samples) {
   # parameters: filter, break locations (1-4 OR "NONE"), labels,
   # rawRNAdata, normRNAdata, xlab(xx) (make it work from 1 to 5. No default), samples(number to be sampled)
-  
+  R5B <- R5D <- NULL
   first <- 0
   second <- 0
   third <- 0
@@ -124,16 +124,16 @@ plotSamplesByDipRegion <- function(minimumCounts, breaks, labels, rawRNAdata,
     RNAdata <- as.matrix(read.table(RNAdata))
   }
   RNAdataDF <- data.frame(RNAdata)
-  RNAdataDF <- data.frame(t(RNAdataDF)) #it looks redundant but this step is crucial if any gene names start with numbers. 
+  RNAdataDF <- data.frame(t(RNAdataDF)) #it looks redundant but this step is crucial if any gene names start with numbers.
   RNAdataDF <- data.frame(t(RNAdataDF)) #the plots will fail without it.
-  
+
   if(!missing(rawRNAdata)){
-    
+
     if(mode(rawRNAdata)=="character") {
       rawRNAdata <- data.frame(read.table(rawRNAdata))
     } else { rawRNAdata <- data.frame(rawRNAdata)}
   }
-  
+
   x.1 <- 0
 
   if(missing(minimumCounts)) {print("no filter applied")}
@@ -142,19 +142,19 @@ plotSamplesByDipRegion <- function(minimumCounts, breaks, labels, rawRNAdata,
   else(regions <- (length(breaks) - 1))
   if(missing(samples)) {samples <- 4}
   if(missing(xlab)){xlab <- "Sample RNA Expression"}
-  
-  
+
+
   if(mode(RNAdata)=="character") {
     RNAdata <- as.matrix(read.table(RNAdata))
   }
-  
+
   if(!missing(rawRNAdata)){
-    
+
     if(mode(rawRNAdata)=="character") {
       rawRNAdata <- data.frame(read.table(rawRNAdata))
     } else { rawRNAdata <- data.frame(rawRNAdata)}
   }
-  
+
   if(!missing(rawRNAdata) && !missing(RNAdata)){
     RNArawcounts <- rawRNAdata
     RNArawcounts$max <- 0
@@ -172,29 +172,29 @@ plotSamplesByDipRegion <- function(minimumCounts, breaks, labels, rawRNAdata,
     DipOutputPvals <- matrix(nrow=nrow(RNAdataDF_R), ncol=1)
 
   }
-  
-  
-  
+
+
+
   #setup and calculation
   for (k in 1:nrow(RNAdataMat)){
-    
+
     e <- diptest::dip(RNAdataMat[k,], full.result = FALSE, min.is.0 = FALSE, debug = FALSE) #actual dip statistical test
     f <- diptest::dip.test(RNAdataMat[k,], simulate.p.value = FALSE, B = 2000)
     DipOutput[k,1] <- e #save output into pre-prepared matrix
     DipOutputPvals[k,1] <- f$p.value
     ##consider extracting the rownames off RNAdata as a vector, which you can then reimpute here
   }
-  
+
   DipOutputDF <- data.frame(DipOutput) # matrix -> dataframe
   DipOutputPDF <- data.frame(DipOutputPvals)
   DipOutputDF$GeneID <- as.character(rownames(RNAdataDF_R))
-  
+
   if(regions==1 && missing(labels)){labels = "Undivided Sample"}
   if(regions==2 && missing(labels)){labels = c("Region A", "Region B")}
   if(regions==3 && missing(labels)){labels = c("Region A", "Region B", "Region C")}
   if(regions==4 && missing(labels)){labels = c("Region A", "Region B", "Region C", "Region D")}
   if(regions==5 && missing(labels)){labels = c("Region A", "Region B", "Region C", "Region D", "Region E")}
-  
+
   try(xx <- xlab)
   if(!missing(breaks) && breaks[1] !="NONE"){ # removed as alt condition of if clause:  | (is.numeric(breaks) && breaks > 0)
     DipOutputDF$Region <- cut(DipOutputDF$DipOutput,
@@ -205,14 +205,14 @@ plotSamplesByDipRegion <- function(minimumCounts, breaks, labels, rawRNAdata,
       DipOutputDF$Region <- as.numeric(as.character(DipOutputDF$Region))
     }
   }
-  
+
   ZeroXMedian <- matrix(nrow=nrow(RNAdataDF_R), ncol=1)
   ZeroIMedian <- matrix(nrow=nrow(RNAdataDF_R), ncol=1)
   row.names(ZeroXMedian) <- row.names(RNAdataDF_R)
   colnames(ZeroXMedian) <- c("Zero-excluded Median")
   row.names(ZeroIMedian) <- row.names(RNAdataDF_R)
   colnames(ZeroIMedian) <- c("Zero-included Median")
-  
+
   for(k in 1:nrow(RNAdataDF_R)) {
     shelf <- RNAdataDF_R[k,]
     row.names(shelf) <- c(1)
@@ -220,23 +220,23 @@ plotSamplesByDipRegion <- function(minimumCounts, breaks, labels, rawRNAdata,
     ZeroXMedian[k,] <- median(as.numeric(shelf2))
     ZeroIMedian[k,] <- median(as.numeric(shelf))
   }
-  
-  
+
+
   DipOutputDF$ZeroXMedian <- as.numeric(ZeroXMedian)
   DipOutputDF$ZeroIMedian <- as.numeric(ZeroIMedian)
   DipOutputDF <- dplyr::mutate(DipOutputDF, Divergence = ZeroXMedian-ZeroIMedian)
-  
-  
-  
+
+
+
   if(samples==1){sublabels = "Sample A"}
   if(samples==2){sublabels = c("Sample A", "Sample B")}
   if(samples==3){sublabels = c("Sample A", "Sample B", "Sample C")}
   if(samples==4){sublabels = c("Sample A", "Sample B", "Sample C", "Sample D")}
   if(samples==5){sublabels = c("Sample A", "Sample B", "Sample C", "Sample D", "Sample E")}
   if(samples==6){sublabels = c("Sample A", "Sample B", "Sample C", "Sample D", "Sample E", "Sample F")}
-  
+
   #plotting (executables)
-  
+
   if(regions>=1 && !is.na(table(DipOutputDF$Region)[1])){	#pick four from whole distribution
     ifelse(regions==1, DF.1 <- DipOutputDF, DF.1 <- DipOutputDF[DipOutputDF$Region==labels[1],])
     ifelse(nrow(DF.1)<samples, print("error: too few observations
@@ -275,7 +275,7 @@ plotSamplesByDipRegion <- function(minimumCounts, breaks, labels, rawRNAdata,
     if(samples==6){x1 <- gridExtra::grid.arrange(pp1, pp2, pp3, pp4, pp5, pp6, ncol=2)}
     first <- x1
   }
-  
+
   if(regions>=2 && !is.na(table(DipOutputDF$Region)[1])){
     DF.2 <- DipOutputDF[DipOutputDF$Region==labels[2],]
     ifelse(nrow(DF.2)<samples, print("error: too few observations
@@ -312,9 +312,9 @@ plotSamplesByDipRegion <- function(minimumCounts, breaks, labels, rawRNAdata,
     if(samples==4){x2 <- gridExtra::grid.arrange(pp1, pp2, pp3, pp4,  ncol=2)}
     if(samples==5){x2 <- gridExtra::grid.arrange(pp1, pp2, pp3, pp4, pp5, ncol=2)}
     if(samples==6){x2 <- gridExtra::grid.arrange(pp1, pp2, pp3, pp4, pp5, pp6, ncol=2)}
-    second <- x2  
+    second <- x2
     }
-  
+
   if(regions>=3 && !is.na(table(DipOutputDF$Region)[1])){
     DF.3 <- DipOutputDF[DipOutputDF$Region==labels[3],]
     ifelse(nrow(DF.3)<samples, print("error: too few observations
@@ -351,9 +351,9 @@ plotSamplesByDipRegion <- function(minimumCounts, breaks, labels, rawRNAdata,
     if(samples==4){x3 <- gridExtra::grid.arrange(pp1, pp2, pp3, pp4,  ncol=2)}
     if(samples==5){x3 <- gridExtra::grid.arrange(pp1, pp2, pp3, pp4, pp5, ncol=2)}
     if(samples==6){x3 <- gridExtra::grid.arrange(pp1, pp2, pp3, pp4, pp5, pp6, ncol=2)}
-    third <- x3  
+    third <- x3
     }
-  
+
   if(regions>=4 && !is.na(table(DipOutputDF$Region)[1])){
     DF.4 <- DipOutputDF[DipOutputDF$Region==labels[4],]
     ifelse(nrow(DF.4)<samples, print("error: too few observations
@@ -392,7 +392,7 @@ plotSamplesByDipRegion <- function(minimumCounts, breaks, labels, rawRNAdata,
     if(samples==6){x4 <- gridExtra::grid.arrange(pp1, pp2, pp3, pp4, pp5, pp6, ncol=2)}
     fourth <- x4
     }
-  
+
   if(regions>=5 && !is.na(table(DipOutputDF$Region)[1])){
     DF.5 <- DipOutputDF[DipOutputDF$Region==labels[5],]
     ifelse(nrow(DF.5)<samples, print("error: too few observations
@@ -431,17 +431,17 @@ plotSamplesByDipRegion <- function(minimumCounts, breaks, labels, rawRNAdata,
     if(samples==6){x5 <- gridExtra::grid.arrange(pp1, pp2, pp3, pp4, pp5, pp6, ncol=2)}
     fifth <- x5
      }
-  
+
  list(DF = DipOutputDF, Plot1 = first, Plot2 = second, Plot3 = third, Plot4 = fourth, Plot5 = fifth)
-  
+
 }
 
 plotSamplesByName <- function(nameList, RNAdata) {
-  
+
   if(mode(RNAdata)=="character") {
     RNAdata <- as.matrix(read.table(RNAdata))
   }
-  
+
   if(length(nameList) %% 2 == 0 && length(nameList) != 8) {
     ncol <- 2
   }
@@ -469,7 +469,7 @@ plotSamplesByName <- function(nameList, RNAdata) {
   try(R6 <- paste(nameList[6], collapse = NULL))
   try(R7 <- paste(nameList[7], collapse = NULL))
   try(R8 <- paste(nameList[8], collapse = NULL))
-  
+
   pp1 <- ggplot2::ggplot(GeneData, ggplot2::aes_string(x=R1)) + ggplot2::geom_density(adjust = 1/5, color = "navy blue") + ggplot2::theme_gray() +
     ggplot2::ggtitle(R1) + ggplot2::ylab("Density") + ggplot2::xlab("Relative Expression")
 
@@ -544,17 +544,18 @@ plotSamplesByName <- function(nameList, RNAdata) {
 }
 
 previewDipDistribution <- function(RNAdata, rawRNAdata, minimumCounts, barLine, adjustVal){  #add sharpness as an argument
-   if(missing(adjustVal)) {adjustVal <- 0.2} 
+  Dip <- p <- NULL
+  if(missing(adjustVal)) {adjustVal <- 0.2}
    if(mode(RNAdata)=="character") {
     RNAdata <- as.matrix(read.table(RNAdata))
   }
-  
+
   if(!missing(rawRNAdata)){
     if(mode(rawRNAdata)=="character"){
       rawRNAdata <- as.matrix(read.table(rawRNAdata))
     }
   }
-  
+
   RNAdataMat <- as.matrix(RNAdata)
   if(missing(barLine)){barLine <- 0}
 
