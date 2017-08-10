@@ -23,7 +23,7 @@ ss <- read.table(url("https://www.ebi.ac.uk/gxa/experiments-content/E-GEOD-70484
 ss[1:5,1:3]
 ```
    \vspace{5mm}
-  Ideally, we would have the row names as the gene names and there would be nothing except gene data in the actual frame, so we will do a few clean-ups and also cut the number of samples in half for ease in computation.
+  Ideally, we would have the gene names as the row names and there would be nothing except gene data in the actual frame, so we will do a few clean-ups and also cut the number of samples in half for quicker computation.
    \vspace{5mm}
 ```{r}
 ss <- ss[(as.numeric(row.names(ss)) %% 2 == 1),]
@@ -44,20 +44,50 @@ Based on this plot, it seems that it could be reasonable to place break points a
 b <- c(-Inf, 0.05, 0.11, Inf)
 ```
  \vspace{5mm}
-Having defined our break regions, our next step is to get an idea of what the gene distributions in each of these regions look like. To do this, we could use the following code:
+Having defined our break regions, our next step is to get an idea of what the gene distributions in each of these regions look like. To plot a couple random selections from each region, we could use the following code:
  \vspace{5mm}
 ```{r, fig.width=5.5, fig.height=4, fig.align='center'}
 mod2 <- plotSamplesByDipRegion(RNAdata = ss, breaks = b, samples = 4, xlab = "Sample RNA Expression")
 ```
  \vspace{5mm}
- There are a couple of important points to make about these plots. First, in this situation 'mod2' is a list. To access any of these plots, use the code 'plot(mod2$PlotX)' with the X replaced with the region number whose samples you are trying to plot. Secondly, a couple of the Region 1 samples look like perfect normal distributions around zero. These genes are the ones that had zero counts in all samples. However, that doesn't mean that Region 1 is all the same, because there are often some genes in the lowest dip region that had counts in one or a few samples. To access those, one could subset the DF output of mod2 to just get values from Region 1. Then to identify those that have counts, subset in such a way as to identify genes with a Zero-Excluded Median greater than zero.  
+At this point, 'mod2' is a list. To access any of these plots, you can use the code 'plot(mod2$PlotX)' with the X replaced with the region number whose samples you are trying to plot. 
+
+\vspace{5mm}
+In order to give an example of how to analyze down to the single gene level, let's focus in on one region. If you look up at the Region 1 plots we just made, a couple (or all) of the Region 1 samples look like perfect normal distributions around zero. These genes are the ones that had zero counts in all samples (in DESeq2-normalized samples, they will be around -0.29, instead). However, that doesn't mean that Region 1 is all the same, because there are typically some genes in the lowest dip region that had counts in one or a few samples. To access those, one could subset the DF output of mod2 to just get values from Region 1. Then to identify those that have counts, subset in such a way as to identify genes with a Zero-Excluded Median greater than zero.
  \vspace{5mm}
-  \vspace{5mm}
-Using this function, we are able to access two sets of outputs. First, we are able to access the dataframe which details each gene's region membership. With this information, one can subset by the Region value to get a collection solely composed of normal or multimodally-distributed genes. If getting this dataframe is your main objective, it can be created more directly (without plots) through the following command:
+```{r, results = "hide"}
+table(mod2$DF$Region)
+mod2.r1 <- mod2$DF[(mod2$DF$Region==1),]
+mod2.r1.g0 <- mod2.r1[(mod2.r1$ZeroXMedian > 0),]
+```
+\vspace{5mm}
+If these were the genes you had in mind, you could then visualize a random sample of them as follows:
+\vspace{5mm}
+```{r, fig.width = 5.5, fig.height = 4, fig.align = 'center'}
+sam <- mod2.r1.g0$GeneID[sample(nrow(mod2.r1.g0), size = 4, replace = FALSE)]
+mod3 <- plotSamplesByName(nameList = sam, RNAdata = ss)
+```
+\vspace{5mm}
+Alternatively, you could extract their Gene ID's with simple subsetting and then export them for whichever kind of further analysis you prefer. Any genes (up to 8 at a time) can be visualized in this manner using plotSamplesByName. To give another example, let's look at some genes on the other end of the dip spectrum. Not just those in Region 3, but those at the far end of region 3 (Dip values exceeding 0.20)
+
+```{r, fig.width = 5.5, fig.height = 4, fig.align = 'center'}
+mod2.high <- mod2$DF[(mod2$DF$DipOutput>=0.20),]
+sam2 <- mod2.high$GeneID[sample(nrow(mod2.high), size = 4, replace = FALSE)]
+mod3.1 <- plotSamplesByName(nameList = sam2, RNAdata = ss)
+```
+Looking at these plots, it appears that these genes are expressed very differently in different tissues, as compared to genes that are more normally-distributed. These different patterns of expression could have meaning as to the corresponding genes' functions/roles, so the simplicity of doing targeted searches like these could make a great tool.
+
+If you are interested more in the region separation than the plots, there are a couple of ways to access that sort of data. The most direct method of getting each gene's Dip value and Region is with the following function:
  \vspace{5mm}
 ```{r, message=FALSE}
 mod3 <- dipExtension(RNAdata = ss, breaks = b)
 head(mod3)
 ```
- \vspace{5mm}
+Alternatively, a dataframe of nearly identical content and structure is accessible through the plotSamplesByDipRegion function we used earlier to make our first sample plots:
+\vspace{5mm}
+```{r}
+head(mod2$DF)
+```
+
+
 
