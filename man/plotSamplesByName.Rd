@@ -13,10 +13,10 @@ plotSamplesByName(nameList, RNAdata)
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{nameList}{
-The names of the desired genes should be concatenated into this variable. If more than eight gene names are specified, function will typically fail. (ex. li <- c("Ascl3", "Bambi", "Pols2")) ). Pay attention to proper capitalization in specifying gene names.
+The names of the desired genes should be concatenated into this variable. If more than eight gene names are specified, function will typically fail. (ex. li <- c("Ascl3", "Bambi", "Pols2")) ). Pay very close attention to proper capitalization in specifying gene names. Any error in capitalization or erroneously-placed spaces will cause the function to fail.
 }
   \item{RNAdata}{
-This argument specifies the RNAseq dataset from which the specified genes' expressional data will be taken. It may take the form of raw or normalized data.
+This argument specifies the RNAseq dataset from which the specified genes' expressional data will be taken. It may take the form of raw or normalized data. Columns with non-numerical data (or containing data not relating to a sample) should be specifically exempted before any analysis is attempted.
 }
 }
 

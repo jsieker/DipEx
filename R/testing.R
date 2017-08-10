@@ -1,5 +1,5 @@
 #changed
-dipExtension <- function(breaks, labels, RNAdata, rawRNAdata, minimumCounts){
+dipExtension <- function(breaks, RNAdata, rawRNAdata, minimumCounts){
 
   x.1 <- 0
   x.2 <- 0
@@ -9,12 +9,9 @@ dipExtension <- function(breaks, labels, RNAdata, rawRNAdata, minimumCounts){
     x.1 <- 0; print("cutting = FALSE")
   } else {
     x.1 <-1
+    labels <- c(1:(length(breaks)-1))
   }
-  if(missing(labels)) {
-    x.2 <- 0
-  } else {
-    x.2 <-1
-  }
+
   if(missing(rawRNAdata)) {
     x.3 <- 0; print("filtering = FALSE")
   } else {
@@ -75,7 +72,7 @@ dipExtension <- function(breaks, labels, RNAdata, rawRNAdata, minimumCounts){
 
 
   #cutting
-  if(x.1 == 1 && x.2 == 1) {
+  if(x.1 == 1) {
     print("cutting")
     DipOutputDF$Region <- cut(DipOutputDF$DipOutput,
                               breaks = breaks,
@@ -110,7 +107,7 @@ dipExtension <- function(breaks, labels, RNAdata, rawRNAdata, minimumCounts){
 
 }
 
-plotSamplesByDipRegion <- function(minimumCounts, breaks, labels, rawRNAdata,
+plotSamplesByDipRegion <- function(minimumCounts, breaks, rawRNAdata,
                                    RNAdata, xlab, samples) {
   # parameters: filter, break locations (1-4 OR "NONE"), labels,
   # rawRNAdata, normRNAdata, xlab(xx) (make it work from 1 to 5. No default), samples(number to be sampled)
@@ -138,8 +135,11 @@ plotSamplesByDipRegion <- function(minimumCounts, breaks, labels, rawRNAdata,
 
   if(missing(minimumCounts)) {print("no filter applied")}
   if(missing(RNAdata) && missing(rawRNAdata)) {print("RNA data missing"); x.1 <- 1}
-  if(missing(breaks)) {print("no breaks selected");  regions <- 1}
-  else(regions <- (length(breaks) - 1))
+  if(missing(breaks)) {
+    print("no breaks selected");  regions <- 1
+    }
+  else{regions <- (length(breaks) - 1)
+       labels <- c(1:(length(breaks)-1))}
   if(missing(samples)) {samples <- 4}
   if(missing(xlab)){xlab <- "Sample RNA Expression"}
 
