@@ -2,6 +2,7 @@ Package: DipEx
 Type: Package
 Title: Analysis of RNAseq data distributions through visualization and Hartigan's Dip test
 Version: 0.1.0
+Date: 2017-09-10
 Author: Jeremy Sieker [aut, cre], Sohyon Lee [aut], and Kristin Baldwin [aut], with contributions from Martin Maechler [ctb].
 Maintainer: Jeremy Sieker <jsieker@ucsd.edu>
 Description: Conducts dip analysis on RNA expression data to evaluate the trends in how individual genes differ in expression across samples. Genes demonstrating different levels of bimodality in their cross-sample distributions are easily identified and grouped for further analysis. To aid with the understanding and exploration of the dip results, plots can be generated to visualize the distributions of genes randomly selected from each region of dip output.
