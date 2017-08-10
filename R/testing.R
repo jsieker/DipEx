@@ -221,6 +221,7 @@ plotSamplesByDipRegion <- function(minimumCounts, breaks, rawRNAdata,
     row.names(shelf) <- c(1)
     shelf2 <- shelf[,(shelf[1,]>0)]
     ZeroXMedian[k,] <- median(as.numeric(shelf2))
+    if(is.na(median(as.numeric(shelf2)))){ZeroXMedian[k,] <- 0}
     ZeroIMedian[k,] <- median(as.numeric(shelf))
   }
 

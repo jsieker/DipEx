@@ -1,0 +1,63 @@
+---
+title: "Identify and Sample Multimodal Genes"
+author: "Jeremy Sieker"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{"Identify and Sample Multimodal Genes"}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+fig_width: 10 
+fig_height: 4 
+---
+___
+<center> <h1>Introduction</h1> </center>
+  The main goal of this package is to aid in quickly analyzing thousands of genes' distributions. By doing this, we can pick out groups of genes whose expressions follow patterns of interest identifiable through their multimodality. In order to illustrate this process, we will import and prepare a RNAseq dataset, identify some logical places to break up the distributions, and take a closer look at some of the genes we identify in that process.  
+  
+  \vspace{5mm}
+  To start, we will import a data set from Expression Atlas' public resources.
+   \vspace{5mm}
+```{r}
+library(DipEx)
+ss <- read.table(url("https://www.ebi.ac.uk/gxa/experiments-content/E-GEOD-70484/resources/BaselineProfilesWriterService.RnaSeq/tsv"), sep = '\t', header = TRUE)
+ss[1:5,1:3]
+```
+   \vspace{5mm}
+  Ideally, we would have the row names as the gene names and there would be nothing except gene data in the actual frame, so we will do a few clean-ups and also cut the number of samples in half for ease in computation.
+   \vspace{5mm}
+```{r}
+ss <- ss[(as.numeric(row.names(ss)) %% 2 == 1),]
+row.names(ss) <- ss$Gene.ID
+ss <- ss[,-c(1:2)] #removing everything that is not expression data
+ss[1:5,1:2]
+```
+ \vspace{5mm}
+We will begin our analysis by getting an idea of how the dip values in this set are distributed. By doing this, we can get an idea of where we should set our region break points.
+ \vspace{5mm}
+```{r, fig.width=7.25, fig.align='center'}
+mod1 <- previewDipDistribution(RNAdata = ss, barLine = 0.025)
+plot(mod1$DipPlot)
+```
+ \vspace{5mm}
+Based on this plot, it seems that it could be reasonable to place break points at Dip = 0.05 and Dip = 0.11. Given the required syntax of the break input, the way to define this is as follows:
+```{r}
+b <- c(-Inf, 0.05, 0.11, Inf)
+```
+ \vspace{5mm}
+Having defined our break regions, our next step is to get an idea of what the gene distributions in each of these regions look like. To do this, we could use the following code:
+ \vspace{5mm}
+```{r, fig.width=5.5, fig.height=4, fig.align='center'}
+mod2 <- plotSamplesByDipRegion(RNAdata = ss, breaks = b, samples = 4, xlab = "Sample RNA Expression")
+```
+ \vspace{5mm}
+ There are a couple of important points to make about these plots. First, in this situation 'mod2' is a list. To access any of these plots, use the code 'plot(mod2$PlotX)' with the X replaced with the region number whose samples you are trying to plot. Secondly, a couple of the Region 1 samples look like perfect normal distributions around zero. These genes are the ones that had zero counts in all samples. However, that doesn't mean that Region 1 is all the same, because there are often some genes in the lowest dip region that had counts in one or a few samples. To access those, one could subset the DF output of mod2 to just get values from Region 1. Then to identify those that have counts, subset in such a way as to identify genes with a Zero-Excluded Median greater than zero.  
+ \vspace{5mm}
+  \vspace{5mm}
+Using this function, we are able to access two sets of outputs. First, we are able to access the dataframe which details each gene's region membership. With this information, one can subset by the Region value to get a collection solely composed of normal or multimodally-distributed genes. If getting this dataframe is your main objective, it can be created more directly (without plots) through the following command:
+ \vspace{5mm}
+```{r, message=FALSE}
+mod3 <- dipExtension(RNAdata = ss, breaks = b)
+head(mod3)
+```
+ \vspace{5mm}
+

@@ -1,6 +1,6 @@
 \name{plotSamplesByDipRegion}
 \alias{plotSamplesByDipRegion}
-%- Also NEED an '\alias' for EACH other topic documented here.
+
 \title{
 Plots expression distributions of genes selected randomly from each dip output region
 }
@@ -11,7 +11,7 @@ Selects a user-defined number of sample genes from across the spectrum of dip va
 plotSamplesByDipRegion(minimumCounts, breaks,
 rawRNAdata, RNAdata, xlab, samples)
 }
-%- maybe also 'usage' for other objects documented here.
+
 \arguments{
   \item{minimumCounts}{
 If 'rawRNAdata' is supplied, 'minimumCounts' is the threshold that each gene's maximum raw expression value must exceed to remain in the normalized RNA data for the analysis.
@@ -52,7 +52,40 @@ Software authors: Jeremy Sieker, Sohyon Lee, Kristin Baldwin
 
 }
 
-% Add one or more standard keywords, see file 'KEYWORDS' in the
-% R documentation directory.
-\keyword{ ~kwd1 }% use one of  RShowDoc("KEYWORDS")
-\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line
+\examples{
+x <- paste("https://www.ebi.ac.uk/gxa/experiments-content",
+  "/E-GEOD-70484/resources/BaselineProfilesWriterService.RnaSeq/tsv", sep = "")
+ss <- read.table(url(x),sep = '\t', header = TRUE)
+ss <- ss[(as.numeric(row.names(ss)) \%\% 2 == 1),]
+#if the previous line fails, remove the slashes from the modulo division and try again
+row.names(ss) <- ss$Gene.ID #cutting it in half to speed up the examples
+ss <- ss[,-c(1:2)] #removing everything that is not expression data
+
+mod <- plotSamplesByDipRegion(RNAdata = ss, breaks = c(-Inf, 0.05, 0.11, Inf),
+                              samples = 4, xlab = "Sample RNA Expression")
+
+#in many datasets, genes with extremely low dip values (or high dip p values)
+#will appear in their expression plots as normal distributions with a mean around zero.
+#These are typically just genes that don't have registered counts in any of the samples.
+#To remove these genes, there are a few options.
+#One can apply both normalized and raw counts (i.e.- supplying both the RNAdata
+# and rawRNA arguments)
+#and employ the 'minimumCounts' filter.
+#Alternatively, pre-filter your data for genes that do not pass your desired
+# expression threshold, then simply
+#use that data for your RNAdata argument and leave the rawRNAdata and
+# minimumCounts arguments blank.
+
+#Due to the difficulty of finding publicly available datasets that have paired
+# raw and normalized counts, the filter will not be
+#demonstrated in this example. However, if you were to have a raw counts set called
+# raws and a normalized counts set called ss, the
+#code would be along the lines of...
+
+#mod <- plotSamplesByDipRegion(RNAdata = ss, rawRNAdata = raws, minimumCounts = 50,
+#                              breaks = c(-Inf, 0.05, 0.11, Inf), samples = 4,
+#                              xlab = "Sample RNA Expression")
+
+
+
+}

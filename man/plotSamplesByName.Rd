@@ -1,6 +1,6 @@
 \name{plotSamplesByName}
 \alias{plotSamplesByName}
-%- Also NEED an '\alias' for EACH other topic documented here.
+
 \title{
 Plots expression distributions of genes selected by name
 }
@@ -10,7 +10,7 @@ Allows the user to plot the expression distributions of up to 8 genes of their c
 \usage{
 plotSamplesByName(nameList, RNAdata)
 }
-%- maybe also 'usage' for other objects documented here.
+
 \arguments{
   \item{nameList}{
 The names of the desired genes should be concatenated into this variable. If more than eight gene names are specified, function will typically fail. (ex. li <- c("Ascl3", "Bambi", "Pols2")) ). Pay very close attention to proper capitalization in specifying gene names. Any error in capitalization or erroneously-placed spaces will cause the function to fail.
@@ -28,10 +28,17 @@ H. Wickham. ggplot2: Elegant Graphics for Data Analysis. Springer-Verlag New Yor
 }
 \author{
 Software authors: Jeremy Sieker, Sohyon Lee, Kristin Baldwin
+}
+\examples{
+x <- paste("https://www.ebi.ac.uk/gxa/experiments-content",
+  "/E-GEOD-70484/resources/BaselineProfilesWriterService.RnaSeq/tsv", sep = "")
+ss <- read.table(url(x),sep = '\t', header = TRUE)
+ss <- ss[(as.numeric(row.names(ss)) \%\% 2 == 1),]
+#if the previous line fails, remove the slashes from the modulo division and try again
+row.names(ss) <- ss$Gene.ID #cutting it in half to speed up the examples
+ss <- ss[,-c(1:2)] #removing everything that is not expression data
 
+geneList <- row.names(ss[sample(nrow(ss), 4), ]) #get some random gene names
+mod4 <- plotSamplesByName(nameList = geneList, RNAdata = ss)
 }
 
-% Add one or more standard keywords, see file 'KEYWORDS' in the
-% R documentation directory.
-\keyword{ ~kwd1 }% use one of  RShowDoc("KEYWORDS")
-\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line
