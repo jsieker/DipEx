@@ -113,7 +113,6 @@ plotSamplesByDipRegion <- function(minimumCounts, breaks, labels, rawRNAdata,
                                    RNAdata, xlab, samples) {
   # parameters: filter, break locations (1-4 OR "NONE"), labels,
   # rawRNAdata, normRNAdata, xlab(xx) (make it work from 1 to 5. No default), samples(number to be sampled)
-  R5B <- R5D <- NULL
   first <- 0
   second <- 0
   third <- 0
@@ -276,7 +275,7 @@ plotSamplesByDipRegion <- function(minimumCounts, breaks, labels, rawRNAdata,
     first <- x1
   }
 
-  if(regions>=2 && !is.na(table(DipOutputDF$Region)[1])){
+  if(regions>=2 && !is.na(table(DipOutputDF$Region)[2])){
     DF.2 <- DipOutputDF[DipOutputDF$Region==labels[2],]
     ifelse(nrow(DF.2)<samples, print("error: too few observations
                                      remaining in region 2 for declared number of samples to be selected"), print("Region 2 samples selected"))
@@ -315,7 +314,7 @@ plotSamplesByDipRegion <- function(minimumCounts, breaks, labels, rawRNAdata,
     second <- x2
     }
 
-  if(regions>=3 && !is.na(table(DipOutputDF$Region)[1])){
+  if(regions>=3 && !is.na(table(DipOutputDF$Region)[3])){
     DF.3 <- DipOutputDF[DipOutputDF$Region==labels[3],]
     ifelse(nrow(DF.3)<samples, print("error: too few observations
                                      remaining in region 3 for declared number of samples to be selected"), print("Region 3 samples selected"))
@@ -354,7 +353,7 @@ plotSamplesByDipRegion <- function(minimumCounts, breaks, labels, rawRNAdata,
     third <- x3
     }
 
-  if(regions>=4 && !is.na(table(DipOutputDF$Region)[1])){
+  if(regions>=4 && !is.na(table(DipOutputDF$Region)[4])){
     DF.4 <- DipOutputDF[DipOutputDF$Region==labels[4],]
     ifelse(nrow(DF.4)<samples, print("error: too few observations
                                      remaining in region 4 for declared number of samples to be selected"), print("Region 4 samples selected"))
@@ -393,7 +392,7 @@ plotSamplesByDipRegion <- function(minimumCounts, breaks, labels, rawRNAdata,
     fourth <- x4
     }
 
-  if(regions>=5 && !is.na(table(DipOutputDF$Region)[1])){
+  if(regions>=5 && !is.na(table(DipOutputDF$Region)[5])){
     DF.5 <- DipOutputDF[DipOutputDF$Region==labels[5],]
     ifelse(nrow(DF.5)<samples, print("error: too few observations
                                      remaining in region 5 for declared number of samples to be selected"), print("Region 5 samples selected"))
@@ -404,7 +403,7 @@ plotSamplesByDipRegion <- function(minimumCounts, breaks, labels, rawRNAdata,
     R5A <- paste(SampleNames5[1], collapse = NULL)
     pp1 <- ggplot2::ggplot(DF.5SampleGeneData, ggplot2::aes_string(x=R5A)) + ggplot2::geom_density(adjust = 1/5, color = "navy blue") + ggplot2::theme_gray() + ggplot2::ggtitle(R5A) + ggplot2::ylab("Density") + ggplot2::xlab(xx)
     if(samples>=2){
-      R2B <- paste(SampleNames5[2], collapse = NULL)
+      R5B <- paste(SampleNames5[2], collapse = NULL)
       pp2 <- ggplot2::ggplot(DF.5SampleGeneData, ggplot2::aes_string(x=R5B)) + ggplot2::geom_density(adjust = 1/5, color = "navy blue") + ggplot2::theme_gray() + ggplot2::xlab(xx) + ggplot2::ggtitle(R5B) + ggplot2::ylab("Density")
     }
     if(samples>=3){
@@ -412,7 +411,7 @@ plotSamplesByDipRegion <- function(minimumCounts, breaks, labels, rawRNAdata,
       pp3 <- ggplot2::ggplot(DF.5SampleGeneData, ggplot2::aes_string(x=R5C)) + ggplot2::geom_density(adjust = 1/5, color = "navy blue") + ggplot2::theme_gray() + ggplot2::ggtitle(R5C) + ggplot2::ylab("Density") + ggplot2::xlab(xx)
     }
     if(samples>=4){
-      R2D <- paste(SampleNames5[4], collapse = NULL)
+      R5D <- paste(SampleNames5[4], collapse = NULL)
       pp4 <- ggplot2::ggplot(DF.5SampleGeneData, ggplot2::aes_string(x=R5D)) + ggplot2::geom_density(adjust = 1/5, color = "navy blue") + ggplot2::theme_gray() + ggplot2::ggtitle(R5D) + ggplot2::ylab("Density") + ggplot2::xlab(xx)
     }
     if(samples>=5){

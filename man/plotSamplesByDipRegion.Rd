@@ -33,7 +33,7 @@ This argument specifies the RNAseq dataset to be analyzed. It may be in the form
 Provides a standardized x-axis label for the output plots.
 }
   \item{samples}{
-This specifies the number of samples to be selected from each region and may range from 1-6. Using a smaller number of samples helps with reliability and '4' is the recommended, and default, value for 'samples'.
+This specifies the number of samples to be selected from each region and may range from 1-4, with 4 as the default.
 }
 }
 \details{
