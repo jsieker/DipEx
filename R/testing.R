@@ -32,7 +32,6 @@ dipExtension <- function(breaks, labels, RNAdata, rawRNAdata, minimumCounts){
 
   RNAdataDF <- data.frame(RNAdata)
 
-
   #filtering of RNAdataDF and DipOutputDF. If the DipOutputDF one fails, move this filter in front of the DipOutputDF creation.
   if(x.3 == 1) {	print("filtering")
     if(mode(rawRNAdata)=="character") {
@@ -161,8 +160,11 @@ plotSamplesByDipRegion <- function(minimumCounts, breaks, labels, rawRNAdata,
     RNArawcounts$max <- 0
     RNArawcounts$max <- apply(RNArawcounts, 1, max)
     RNArawbelow50 <- RNArawcounts[which(RNArawcounts$max<minimumCounts),]
-    rr <- row.names(RNArawbelow50)
-    RNAdataDF_R <- RNAdataDF[(!row.names(RNAdataDF) %in% rr), ]
+    rr <- data.frame(row.names(RNArawbelow50))
+    row.names(rr) <- rr[,1]
+    rr <- data.frame(t(rr))
+    rr <- data.frame(t(rr))
+    RNAdataDF_R <- RNAdataDF[(!row.names(RNAdataDF) %in% row.names(rr)), ]
     RNAdataMat <- as.matrix(RNAdataDF_R)
     DipOutput <- matrix(nrow=nrow(RNAdataDF_R), ncol=1) #preparing a matrix to receive output in the function step
     DipOutputPvals <- matrix(nrow=nrow(RNAdataDF_R), ncol=1) #preparing a matrix to receive output in the function step

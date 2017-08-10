@@ -38,6 +38,8 @@ This specifies the number of samples to be selected from each region and may ran
 }
 \details{
 The sampling starts to break down at the upper end of the dip distribution. Typically, the plots become unreliable when the number of samples exceeds 4 and when the dip values of the samples in the region exceed 0.12.
+
+It is important to note than in the dataframe this function outputs, any gene whose name started with a number (0-9) will have an 'X' placed in front of its name in the output GeneID. Many hours were put into avoiding this outcome, but it was the best solution we could find in the context of ggplot2's treatment of string variables.
 }
 \value{
 The output of this function is a list containing the elements DF (Dip and region output dataframe) and plots for the samples from regions 1-5 (Plot1, Plot2, Plot3, Plot4, Plot5). If fewer than five regions are sampled, the upper regions' plot variables will simply read '0'.
