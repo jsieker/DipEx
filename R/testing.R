@@ -27,16 +27,17 @@ dipExtension <- function(breaks, labels, RNAdata, rawRNAdata, minimumCounts){
   if(x.1==1) {if(length(breaks) != (length(labels) + 1)) {print("invalid dimensions of breaks and labels")}}
   if(mode(RNAdata)=="character") {
   	RNAdata <- as.matrix(read.table(RNAdata))
-
   }
-
+  if(mode(rawRNAdata)=="character") {
+    rawRNAdata <- as.matrix(read.table(rawRNAdata))
+  }
 
   RNAdataDF <- data.frame(RNAdata)
 
 
   #filtering of RNAdataDF and DipOutputDF. If the DipOutputDF one fails, move this filter in front of the DipOutputDF creation.
   if(x.3 == 1) {	print("filtering")
-  	rawRNAdata <- read.table(rawRNAdata)
+  	rawRNAdata <- data.frame(rawRNAdata)
     #row.names(DipOutputDF) <- row.names(RNAdataDF)
     rawRNAdata$max <- 0
     rawRNAdata$max <- apply(rawRNAdata, 1, max)
