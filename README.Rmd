@@ -1,0 +1,21 @@
+---
+title: "README"
+output: html_document
+---
+This is a package developed by Jeremy Sieker, Sohyon Lee, and Kristin Baldwin at The Scripps Research Institute. For more information please contact jsieker@ucsd.edu  
+
+##Installation
+Using the 'devtools' package:
+```{r, eval = FALSE}
+install.packages("devtools")
+library(devtools)
+install_github("jsieker/DipEx")
+```
+  
+##Purpose
+This is an extension of the 'diptest' package specifically developed for use on large RNA sequencing datasets. It allows Hartigan's Dip Test to be applied to thousands of genes across multiple samples. The genes in the data can then be stratified and explored by parameters describing their expressional distributions, allowing identification of genes with expression patterns of interest for further analysis.
+
+##Usage
+
+For a thorough walkthrough of uploading data and using each of this package's functions, please see the vignette accessible at (https://github.com/jsieker/DipEx/blob/master/vignettes/DipEx_Demonstration.Rmd).
+

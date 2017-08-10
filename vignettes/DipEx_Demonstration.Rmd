@@ -1,5 +1,5 @@
 ---
-title: "DipEx Demonstration"
+title: "DipEx_Demonstration"
 author: "Jeremy Sieker"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
@@ -7,8 +7,6 @@ vignette: >
   %\VignetteIndexEntry{DipEx_Demonstration}
   %\VignetteEngine{knitr::markdown}
   %\VignetteEncoding{UTF-8}
-fig_width: 10 
-fig_height: 4 
 ---
 ___
 <center> <h1>Introduction</h1> </center>
